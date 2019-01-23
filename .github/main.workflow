@@ -5,6 +5,9 @@ workflow "New workflow" {
 
 action "GitHub action for Jira" {
   uses = "./"
-  secrets = ["JIRA_API_TOKEN"]
-  args = "--endpoint=https://rudzon.atlassian.net --verbose view INC-3"
+  secrets = [
+    "JIRA_API_TOKEN",
+    "JIRA_USER_EMAIL",
+  ]
+  args = "--endpoint=https://rudzon.atlassian.net view INC-3"
 }
