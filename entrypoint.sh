@@ -1,4 +1,7 @@
 #!/bin/sh
 set -eu
 
-sh -c "/jira-linux-amd64 $* --login=$JIRA_USER_EMAIL"
+mkdir .jira.d
+echo "user: '$JIRA_USER_EMAIL'" > .jira.d/config.yml
+
+sh -c "/jira-linux-amd64 $*"
