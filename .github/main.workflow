@@ -1,6 +1,6 @@
 workflow "New workflow" {
   resolves = ["GitHub action for Jira"]
-  on = "commit_comment"
+  on = "push"
 }
 
 action "GitHub action for Jira" {
