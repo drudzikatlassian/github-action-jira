@@ -10,7 +10,7 @@ action "Comment issue INC-3" {
     "JIRA_USER_EMAIL",
     "JIRA_BASE_URL",
   ]
-  args = "comment --comment=\"'$GITHUB_ACTOR' pushed to '$GITHUB_REPOSITORY'\" INC-3"
+  args = "comment --noedit --comment=\"'$GITHUB_ACTOR' pushed to '$GITHUB_REPOSITORY'\" INC-3"
 }
 
 action "View issue INC-4" {
