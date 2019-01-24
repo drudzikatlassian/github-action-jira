@@ -8,6 +8,7 @@ action "GitHub action for Jira" {
   secrets = [
     "JIRA_API_TOKEN",
     "JIRA_USER_EMAIL",
+    "JIRA_BASE_URL",
   ]
-  args = "--endpoint=https://rudzon.atlassian.net view INC-3"
+  args = "view INC-3"
 }
