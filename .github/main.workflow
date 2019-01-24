@@ -1,9 +1,9 @@
 workflow "New workflow" {
-  resolves = ["GitHub action for Jira"]
   on = "push"
+  resolves = ["View issue INC-4"]
 }
 
-action "GitHub action for Jira" {
+action "View issue INC-3" {
   uses = "./"
   secrets = [
     "JIRA_API_TOKEN",
@@ -11,4 +11,11 @@ action "GitHub action for Jira" {
     "JIRA_BASE_URL",
   ]
   args = "view INC-3"
+}
+
+action "View issue INC-4" {
+  uses = "./"
+  needs = ["View issue INC-3"]
+  args = "view INC-4"
+  secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
 }
