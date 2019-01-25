@@ -16,23 +16,16 @@ if [ ! -f $HOME/.jira.d/config.yml ]; then
     else
        echo "endpoint: $JIRA_BASE_URL" >> $HOME/.jira.d/config.yml
     fi
-else
-    echo 'Config file:\n'
-    cat $HOME/.jira.d/config.yml
 fi
 
 if [ -f $HOME/.jira.d/credentials ]; then
-    echo "Loading stored credentials ..."
-    echo $HOME/.jira.d/credentials
     export $(grep -v '^#' $HOME/.jira.d/credentials | xargs -d '\n')
 else
     if [ -z $JIRA_API_TOKEN ]; then
         echo "ERROR: Please set JIRA_API_TOKEN env"; exit 1
     else
-        echo "Storing credentials ..."
         touch $HOME/.jira.d/credentials
         echo "JIRA_API_TOKEN=$JIRA_API_TOKEN" >> $HOME/.jira.d/credentials
-        cat $HOME/.jira.d/credentials
     fi
 fi
 
