@@ -19,6 +19,7 @@ if [ ! -f /.jira.d/config.yml ]; then
 fi
 
 if [ ! -f /.jira.d/credentials]; then
+    echo "Storing credentials ..."
     if [ ! -z "$JIRA_API_TOKEN" ]; then
         touch /.jira.d/credentials
         echo "JIRA_API_TOKEN=$JIRA_API_TOKEN" >> /.jira.d/credentials
@@ -26,6 +27,7 @@ if [ ! -f /.jira.d/credentials]; then
         echo "ERROR: Please set JIRA_API_TOKEN env"; exit 1
     fi
 else
+    echo "Loading stored credentials ..."
     export $(grep -v '^#' /.jira.d/credentials | xargs -d '\n')
 fi
 
