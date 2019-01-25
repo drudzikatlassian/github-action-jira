@@ -27,5 +27,6 @@ if [ ! -f /.jira.d/credentials]; then
     fi
 else
     export $(grep -v '^#' /.jira.d/credentials | xargs -d '\n')
+fi
 
 sh -c "/jira-linux-amd64 $*"
