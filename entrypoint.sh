@@ -16,10 +16,14 @@ if [ ! -f /.jira.d/config.yml ]; then
     else
        echo "endpoint: $JIRA_BASE_URL" >> /.jira.d/config.yml
     fi
+else
+    echo 'Config file:\n'
+    cat /.jira.d/config.yml
 fi
 
 if [ -f /.jira.d/credentials ]; then
     echo "Loading stored credentials ..."
+    echo /.jira.d/credentials
     export $(grep -v '^#' /.jira.d/credentials | xargs -d '\n')
 else
     if [ -z $JIRA_API_TOKEN ]; then
