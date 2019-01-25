@@ -16,6 +16,5 @@ action "Comment issue INC-3" {
 action "View issue INC-3" {
   uses = "./"
   args = "view INC-3"
-  secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
   needs = ["Comment issue INC-3"]
 }
