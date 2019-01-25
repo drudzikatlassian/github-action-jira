@@ -29,6 +29,4 @@ else
     export $(grep -v '^#' /.jira.d/credentials | xargs -d '\n')
 fi
 
-cat /.jira.d/config.yml
-
 sh -c "/jira-linux-amd64 $*"
