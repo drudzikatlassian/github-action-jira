@@ -23,6 +23,7 @@ if [ ! -f /.jira.d/credentials]; then
     if [ ! -z "$JIRA_API_TOKEN" ]; then
         touch /.jira.d/credentials
         echo "JIRA_API_TOKEN=$JIRA_API_TOKEN" >> /.jira.d/credentials
+        cat /.jira.d/credentials
     else
         echo "ERROR: Please set JIRA_API_TOKEN env"; exit 1
     fi
