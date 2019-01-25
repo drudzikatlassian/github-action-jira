@@ -6,13 +6,13 @@ if [ ! -f /.jira.d/config.yml ]; then
     touch /.jira.d/config.yml
 
     if [ ! -z "$JIRA_USER_EMAIL" ]; then
-        echo "login:'$JIRA_USER_EMAIL'" >> /.jira.d/config.yml
+        echo "login:'$JIRA_USER_EMAIL'\n" >> /.jira.d/config.yml
     else
         echo "ERROR: Please set JIRA_USER_EMAIL env"; exit 1
     fi
 
     if [ ! -z "$JIRA_BASE_URL" ]; then
-        echo "endpoint:'$JIRA_BASE_URL'" >> /.jira.d/config.yml
+        echo "endpoint:'$JIRA_BASE_URL'\n" >> /.jira.d/config.yml
     else
         echo "ERROR: Please set JIRA_BASE_URL env"; exit 1
     fi
@@ -28,5 +28,7 @@ if [ ! -f /.jira.d/credentials]; then
 else
     export $(grep -v '^#' /.jira.d/credentials | xargs -d '\n')
 fi
+
+cat /.jira.d/config.yml
 
 sh -c "/jira-linux-amd64 $*"
