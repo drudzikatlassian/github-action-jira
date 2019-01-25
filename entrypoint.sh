@@ -18,7 +18,7 @@ if [ ! -f /.jira.d/config.yml ]; then
     fi
 fi
 
-if [ ! -f /.jira.d/credentials]; then
+if [ ! -f /.jira.d/credentials ]; then
     echo "Storing credentials ..."
     if [ ! -z "$JIRA_API_TOKEN" ]; then
         touch /.jira.d/credentials
