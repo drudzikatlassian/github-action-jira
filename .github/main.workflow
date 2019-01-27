@@ -1,6 +1,6 @@
 workflow "New workflow" {
   on = "push"
-  resolves = ["View issue INC-3"]
+  resolves = ["View issue INC-4"]
 }
 
 action "Comment issue INC-3" {
@@ -13,8 +13,8 @@ action "Comment issue INC-3" {
   args = "comment --noedit --comment=\"$GITHUB_ACTOR pushed to $GITHUB_REPOSITORY\" INC-3"
 }
 
-action "View issue INC-3" {
+action "View issue INC-4" {
   uses = "./"
-  args = "view INC-3"
+  args = "view INC-4"
   needs = ["Comment issue INC-3"]
 }
