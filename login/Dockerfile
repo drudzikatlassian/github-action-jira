@@ -1,4 +1,4 @@
-FROM alpine
+FROM ubuntu
 
 LABEL "name"="Jira Login Action"
 LABEL "maintainer"="Dima Rudzik <githubactions+drudzik@atlassian.net>"
