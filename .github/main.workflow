@@ -1,20 +1,15 @@
-workflow "New workflow" {
+workflow "End to End test" {
   on = "push"
-  resolves = ["View issue INC-4"]
+  resolves = ["GitHub action for Jira Cloud"]
 }
 
-action "Comment issue INC-3" {
-  uses = "./"
-  secrets = [
-    "JIRA_API_TOKEN",
-    "JIRA_USER_EMAIL",
-    "JIRA_BASE_URL",
-  ]
+action "Jira Cloud Login" {
+  uses = "drudzikatlassian/github-action-jira/login@master"
+  secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
+}
+
+action "GitHub action for Jira Cloud" {
+  uses = "drudzikatlassian/github-action-jira/cli@master"
+  needs = ["Jira Cloud Login"]
   args = "comment --noedit --comment=\"$GITHUB_ACTOR pushed to $GITHUB_REPOSITORY\" INC-3"
-}
-
-action "View issue INC-4" {
-  uses = "./"
-  args = "view INC-4"
-  needs = ["Comment issue INC-3"]
 }
