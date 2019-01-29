@@ -1,53 +1,29 @@
-include help.mk
+export ROOT_DIR=$(CURDIR)
+export DOCKER_REPO=atlassian
 
-VERSION=1.5.0
-BUILD_FILES=build/files
+MODULES=$(dir $(wildcard */Makefile))
 
 .PHONY: clean
-clean: ## Clean up after the build process.
-	rm -rf build
+clean: ## Call the 'clean' target on all sub-modules
+	$(foreach mod,$(MODULES),($(MAKE) -C $(mod) $@) || exit $$?;)
 
 .PHONY: lint
-lint: ## Lint all of the files for this Action.
+lint: ## Call the 'lint' target on all sub-modules
+	$(foreach mod,$(MODULES),($(MAKE) -C $(mod) $@) || exit $$?;)
 
 .PHONY: build
-build: clean package-multi ## Build this Action.
+build: ## Call the 'build' target on all sub-modules
+	$(foreach mod,$(MODULES),($(MAKE) -C $(mod) $@) || exit $$?;)
 
 .PHONY: test
-test: ## Test the components of this Action.
+test: ## Call the 'test' target on all sub-modules
+	$(foreach mod,$(MODULES),($(MAKE) -C $(mod) $@) || exit $$?;)
 
 .PHONY: publish
-publish: ## Publish this Action.
+publish: ## Call the 'publish' target on all sub-modules
+	$(foreach mod,$(MODULES),($(MAKE) -C $(mod) $@) || exit $$?;)
 
-generate-multi:
-	$(call copyFiles)
-	mv $(BUILD_DIR)/makefile.mk $(BUILD_DIR)/Makefile
+.PHONY: dev-all
+dev-all: lint build test
 
-generate-single:
-	$(call copyFiles)
-	rm -f $(BUILD_DIR)/makefile.mk
-	mv $(BUILD_DIR)/action_template.mk $(BUILD_DIR)/Makefile
-
-package-multi: BUILD_TYPE=multi-action
-package-multi: BUILD_DIR=$(BUILD_FILES)/$(BUILD_TYPE)
-package-multi: generate-multi
-	$(call tar)
-
-package-single: BUILD_TYPE=single-action
-package-single: BUILD_DIR=$(BUILD_FILES)/$(BUILD_TYPE)
-package-single: generate-single
-	$(call tar)
-
-define copyFiles
-mkdir -p $(BUILD_DIR)
-cp -R dockerfile_lint $(BUILD_DIR)/.dockerfile_lint
-cp *.mk $(BUILD_DIR)/.
-mkdir -p $(BUILD_DIR)/.github
-cp ../$(BUILD_TYPE).workflow $(BUILD_DIR)/.github/main.workflow
-endef
-
-TAR_FILES=.github .dockerfile_lint *
-
-define tar
-cd $(BUILD_DIR); tar czvf ../../$(BUILD_TYPE)-template.tar.gz $(TAR_FILES)
-endef
+include help.mk

@@ -2,7 +2,7 @@ include ../docker.mk
 include ../help.mk
 include ../shell.mk
 
-IMAGE_NAME=jira-cloud-login
+IMAGE_NAME=github-action-jira-cloud-login
 
 .PHONY: clean
 clean: ## Clean up after the build process.
