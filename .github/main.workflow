@@ -1,4 +1,4 @@
-workflow "New workflow" {
+workflow "End to End test" {
   on = "push"
   resolves = ["GitHub action for Jira Cloud"]
 }
