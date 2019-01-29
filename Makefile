@@ -11,7 +11,7 @@ clean: ## Clean up after the build process.
 lint: ## Lint all of the files for this Action.
 
 .PHONY: build
-build: clean package-single package-multi ## Build this Action.
+build: clean package-multi ## Build this Action.
 
 .PHONY: test
 test: ## Test the components of this Action.
