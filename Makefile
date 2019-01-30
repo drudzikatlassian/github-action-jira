@@ -1,5 +1,5 @@
 export ROOT_DIR=$(CURDIR)
-export DOCKER_REPO=atlassian
+export DOCKER_REPO=drudzikatlassian
 
 MODULES=$(dir $(wildcard */Makefile))
 
