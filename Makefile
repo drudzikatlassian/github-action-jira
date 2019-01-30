@@ -1,5 +1,5 @@
 export ROOT_DIR=$(CURDIR)
-export DOCKER_REPO=drudzikatlassian
+export DOCKER_REPO=drudzik
 
 MODULES=$(dir $(wildcard */Makefile))
 
