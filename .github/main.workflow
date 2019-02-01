@@ -34,3 +34,19 @@ action "Publish" {
   runs = "make"
   args = "publish"
 }
+
+workflow "Test" {
+  on = "push"
+  resolves = ["GitHub action for Jira Cloud"]
+}
+
+action "Jira Cloud Login" {
+  uses = "./login"
+  secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
+}
+
+action "GitHub action for Jira Cloud" {
+  uses = "./cli"
+  needs = ["Jira Cloud Login"]
+  args = "view INC-3"
+}
