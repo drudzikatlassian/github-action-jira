@@ -1,4 +1,4 @@
-workflow "Build and Publish" {
+workflow "Build - Test - Publish" {
   on = "push"
   resolves = [
     "Add comment",
