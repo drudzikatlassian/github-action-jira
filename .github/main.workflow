@@ -1,8 +1,8 @@
 workflow "Build and Publish" {
   on = "push"
   resolves = [
-    "Publish",
-    "Build",
+    "Add comment",
+    "actions/action-builder/docker@master",
   ]
 }
 
@@ -25,15 +25,45 @@ action "Publish Filter" {
   args = "branch master"
 }
 
+action "Jira Cloud Login" {
+  uses = "./login"
+  needs = ["Build"]
+  secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
+}
+
+action "Transition to In Progress" {
+  uses = "./cli"
+  needs = ["Jira Cloud Login"]
+  args = "in-progress INC-3"
+}
+
+action "Add comment" {
+  uses = "./cli"
+  needs = ["Jira Cloud Login"]
+  args = "comment --noedit --comment=\"test comment\" INC-3"
+}
+
+action "View issue" {
+  uses = "./cli"
+  needs = ["Transition to In Progress", "Add comment"]
+  args = "view INC-3"
+}
+
+action "if branch is master" {
+  uses = "actions/bin/filter@master"
+  needs = ["View issue"]
+  args = "branch master"
+}
+
 action "Docker Login" {
-  needs = ["Publish Filter"]
   uses = "actions/docker/login@master"
+  needs = ["if branch is master"]
   secrets = ["DOCKER_USERNAME", "DOCKER_PASSWORD"]
 }
 
-action "Publish" {
-  needs = ["Docker Login"]
+action "actions/action-builder/docker@master" {
   uses = "actions/action-builder/docker@master"
   runs = "make"
   args = "publish"
+  needs = ["Docker Login"]
 }
