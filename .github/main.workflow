@@ -31,12 +31,6 @@ action "Jira Cloud Login" {
   secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
 }
 
-action "Transition to In Progress" {
-  uses = "./cli"
-  needs = ["Jira Cloud Login"]
-  args = "in-progress INC-3"
-}
-
 action "Add comment" {
   uses = "./cli"
   needs = ["Jira Cloud Login"]
@@ -45,7 +39,7 @@ action "Add comment" {
 
 action "View issue" {
   uses = "./cli"
-  needs = ["Transition to In Progress", "Add comment"]
+  needs = ["Add comment"]
   args = "view INC-3"
 }
 
