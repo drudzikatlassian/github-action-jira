@@ -1,6 +1,9 @@
 workflow "Build and Publish" {
   on = "push"
-  resolves = "Publish"
+  resolves = [
+    "Publish",
+    "Build",
+  ]
 }
 
 action "Lint" {
@@ -33,20 +36,4 @@ action "Publish" {
   uses = "actions/action-builder/docker@master"
   runs = "make"
   args = "publish"
-}
-
-workflow "Test" {
-  on = "push"
-  resolves = ["GitHub action for Jira Cloud"]
-}
-
-action "Jira Cloud Login" {
-  uses = "./login"
-  secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
-}
-
-action "GitHub action for Jira Cloud" {
-  uses = "./cli"
-  needs = ["Jira Cloud Login"]
-  args = "view INC-3"
 }
