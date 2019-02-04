@@ -72,5 +72,5 @@ action "Get Creation info" {
 action "Create issue" {
   uses = "./cli"
   needs = ["Get Creation info"]
-  args = "create --noedit --project=INC --issuetype=Incident --override summary=\"$GITHUB_REPOSITORY test of actions ($GITHUB_SHA)\" --override customfield_10021=10001"
+  args = "create --noedit --project=INC --issuetype=Incident --override summary=\"$GITHUB_REPOSITORY test of actions ($GITHUB_SHA)\" customfield_10021=\"10001\""
 }
