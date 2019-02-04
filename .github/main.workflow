@@ -3,7 +3,7 @@ workflow "Build - Test - Publish" {
   resolves = [
     "Add comment",
     "actions/action-builder/docker@master",
-    "GitHub action for Jira Cloud",
+    "Create Issue",
   ]
 }
 
@@ -63,8 +63,8 @@ action "actions/action-builder/docker@master" {
   needs = ["Docker Login"]
 }
 
-action "GitHub action for Jira Cloud" {
+action "Create Issue" {
   uses = "./cli"
   needs = ["Jira Cloud Login"]
-  args = "create"
+  args = "create --noedit --project=INC --issuetype=Incident"
 }
