@@ -66,5 +66,5 @@ action "actions/action-builder/docker@master" {
 action "Get Creation info" {
   uses = "./cli"
   needs = ["Jira Cloud Login"]
-  args = "createmeta --project=INC"
+  args = "createmeta --project=INC --issuetype=Incident"
 }
