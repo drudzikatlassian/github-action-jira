@@ -3,7 +3,7 @@ workflow "Build - Test - Publish" {
   resolves = [
     "Add comment",
     "actions/action-builder/docker@master",
-    "Create Issue",
+    "Get Creation info",
   ]
 }
 
@@ -63,8 +63,8 @@ action "actions/action-builder/docker@master" {
   needs = ["Docker Login"]
 }
 
-action "Create Issue" {
+action "Get Creation info" {
   uses = "./cli"
   needs = ["Jira Cloud Login"]
-  args = "create --noedit --project=INC --issuetype=Incident --override summary=\"$GITHUB_REPOSITORY test of actions ($GITHUB_SHA)\" --override severity=1"
+  args = "createmeta"
 }
