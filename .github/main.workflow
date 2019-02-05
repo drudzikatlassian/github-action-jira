@@ -3,8 +3,8 @@ workflow "Build - Test - Publish" {
   resolves = [
     "Add comment",
     "actions/action-builder/docker@master",
-    "Create issue",
     "actions/bin/sh@master",
+    "Get Creation info",
   ]
 }
 
@@ -70,20 +70,14 @@ action "Get Creation info" {
   args = "createmeta --project=INC --issuetype=Incident"
 }
 
-action "Create issue" {
-  uses = "./cli"
-  needs = ["Get Creation info"]
-  args = "create --noedit --project=INC --issuetype=Incident --override summary=\"$GITHUB_REPOSITORY test of actions ($GITHUB_SHA)\" customfield_10021=\"10001\""
-}
-
 action "Write template for Issue" {
   uses = "actions/bin/sh@master"
   needs = ["Get Creation info"]
-  args = "  echo \"project:     key: INC   issuetype:     name: Incident   summary: >-    description: |~    assignee:     name:   reporter:     name: drudzik\" >> $HOME/.jira.d/testtemplate"
+  args = "  echo \"project:     key: INC   issuetype:     name: Incident   summary: >-    description: |~    assignee:     name:   reporter:     name: drudzik\" >> $HOME/.jira.d/create.yml"
 }
 
 action "actions/bin/sh@master" {
   uses = "actions/bin/sh@master"
   needs = ["Write template for Issue"]
-  args = "cat $HOME/.jira.d/testtemplate"
+  args = "cat $HOME/.jira.d/create.yml"
 }
