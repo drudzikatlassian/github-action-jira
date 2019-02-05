@@ -2,9 +2,9 @@ workflow "Build - Test - Publish" {
   on = "push"
   resolves = [
     "Add comment",
-    "actions/action-builder/docker@master",
     "Save Issue key",
     "Select Jira Issue From",
+    "View issue",
   ]
 }
 
@@ -49,25 +49,6 @@ action "View issue" {
   uses = "./cli"
   needs = ["Add comment"]
   args = "view INC-3"
-}
-
-action "if branch is master" {
-  uses = "actions/bin/filter@master"
-  needs = ["View issue"]
-  args = "branch master"
-}
-
-action "Docker Login" {
-  uses = "actions/docker/login@master"
-  needs = ["if branch is master"]
-  secrets = ["DOCKER_USERNAME", "DOCKER_PASSWORD"]
-}
-
-action "actions/action-builder/docker@master" {
-  uses = "actions/action-builder/docker@master"
-  runs = "make"
-  args = "publish"
-  needs = ["Docker Login"]
 }
 
 action "Select Jira Issue From" {
