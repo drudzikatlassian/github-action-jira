@@ -2,7 +2,7 @@ include ../docker.mk
 include ../help.mk
 include ../shell.mk
 
-IMAGE_NAME=github-action-jira-cloud-select-issue
+IMAGE_NAME=github-action-jira-cloud-select-issue-from
 
 .PHONY: clean
 clean: ## Clean up after the build process.
