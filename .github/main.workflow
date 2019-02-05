@@ -73,7 +73,7 @@ action "Get Creation info" {
 action "Write template for Issue" {
   uses = "actions/bin/sh@master"
   needs = ["Get Creation info"]
-  args = "  echo \"project:     key: INC   issuetype:     name: Incident   summary: >-    description: |~    assignee:     name:   reporter:     name: drudzik\" >> $HOME/.jira.d/create.yml"
+  args = "echo \"fields:\\     project:\\         key: INC\\\" >> $HOME/.jira.d/create.yml"
 }
 
 action "actions/bin/sh@master" {
