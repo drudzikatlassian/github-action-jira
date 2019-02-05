@@ -1,4 +1,5 @@
 const _ = require('lodash')
-console.log('args here:' + process.argv[0])
+const arg = process.argv[3]
+console.log('args here:' + arg)
 const githubEvent = require(process.env['GITHUB_EVENT_PATH'])
-console.log(`Extracting string '${process.argv[0]}' from event: ${_.get(githubEvent, process.argv[0])}`)
+console.log(`Extracting string '${arg}' from event: ${_.get(githubEvent, arg)}`)
