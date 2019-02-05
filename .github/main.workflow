@@ -3,7 +3,6 @@ workflow "Build - Test - Publish" {
   resolves = [
     "Add comment",
     "actions/action-builder/docker@master",
-    "actions/bin/sh@master",
     "Get Creation info",
   ]
 }
@@ -68,16 +67,4 @@ action "Get Creation info" {
   uses = "./cli"
   needs = ["Jira Cloud Login"]
   args = "createmeta --project=INC --issuetype=Incident"
-}
-
-action "Write template for Issue" {
-  uses = "actions/bin/sh@master"
-  needs = ["Get Creation info"]
-  args = "'echo fields:\\n     project:\\n         key: INC\\n >> $HOME/.jira.d/create.yml'"
-}
-
-action "actions/bin/sh@master" {
-  uses = "actions/bin/sh@master"
-  needs = ["Write template for Issue"]
-  args = "cat $HOME/.jira.d/create.yml"
 }
