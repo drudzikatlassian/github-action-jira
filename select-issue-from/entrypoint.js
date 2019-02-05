@@ -1,6 +1,12 @@
 const _ = require('lodash')
-const arg = process.argv[2]
-console.log('args here:' + arg)
+const argv = require('minimist')(process.argv.slice(2))
 const githubEvent = require(process.env['GITHUB_EVENT_PATH'])
+
+let extractString = ''
 console.log(`GithubEvent: ${JSON.stringify(githubEvent, null, 4)}`)
-console.log(`Extracting string '${arg}' from event: ${_.get(githubEvent, arg)}`)
+
+if (argv.event) {
+  extractString = _.get(githubEvent, argv.event)
+}
+
+console.log(`Extracting from string '${extractString}'`)
