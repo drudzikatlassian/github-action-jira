@@ -54,5 +54,5 @@ action "View issue" {
 action "Select Jira Issue From" {
   uses = "./select-issue-from"
   needs = ["Jira Cloud Login"]
-  args = "ref"
+  args = "--event=ref"
 }
