@@ -3,8 +3,8 @@ workflow "Build - Test - Publish" {
   resolves = [
     "Add comment",
     "actions/action-builder/docker@master",
-    "Get Creation info",
     "Save Issue key",
+    "Select Jira Issue From",
   ]
 }
 
@@ -70,8 +70,8 @@ action "actions/action-builder/docker@master" {
   needs = ["Docker Login"]
 }
 
-action "Get Creation info" {
-  uses = "./cli"
+action "Select Jira Issue From" {
+  uses = "./select-issue"
   needs = ["Jira Cloud Login"]
-  args = "createmeta --project=INC --issuetype=Incident"
+  args = "commit message"
 }
