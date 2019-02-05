@@ -10,7 +10,6 @@ LABEL "com.github.actions.icon"="log-in"
 LABEL "com.github.actions.color"="blue"
 
 COPY package*.json ./
-RUN npm ci
 COPY . .
 
 ENTRYPOINT ["node", "/entrypoint.js"]

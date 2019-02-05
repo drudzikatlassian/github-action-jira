@@ -73,5 +73,5 @@ action "actions/action-builder/docker@master" {
 action "Select Jira Issue From" {
   uses = "./select-issue-from"
   needs = ["Jira Cloud Login"]
-  args = "commit message"
+  args = "ref"
 }
