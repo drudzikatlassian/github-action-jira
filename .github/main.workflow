@@ -4,6 +4,7 @@ workflow "Build - Test - Publish" {
     "Add comment",
     "actions/action-builder/docker@master",
     "Get Creation info",
+    "Save Issue key",
   ]
 }
 
@@ -67,4 +68,10 @@ action "Get Creation info" {
   uses = "./cli"
   needs = ["Jira Cloud Login"]
   args = "createmeta --project=INC --issuetype=Incident"
+}
+
+action "Save Issue key" {
+  uses = "./cli-config"
+  needs = ["Jira Cloud Login"]
+  args = "issue: INC-3"
 }
