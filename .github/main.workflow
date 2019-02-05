@@ -33,10 +33,16 @@ action "Jira Cloud Login" {
   secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
 }
 
+action "Save Issue key" {
+  uses = "./cli-config"
+  needs = ["Jira Cloud Login"]
+  args = "issue: INC-3"
+}
+
 action "Add comment" {
   uses = "./cli"
-  needs = ["Jira Cloud Login"]
-  args = "comment --noedit --comment=\"test comment\" INC-3"
+  needs = ["Save Issue key"]
+  args = "comment --noedit --comment=\"test comment\""
 }
 
 action "View issue" {
@@ -68,10 +74,4 @@ action "Get Creation info" {
   uses = "./cli"
   needs = ["Jira Cloud Login"]
   args = "createmeta --project=INC --issuetype=Incident"
-}
-
-action "Save Issue key" {
-  uses = "./cli-config"
-  needs = ["Jira Cloud Login"]
-  args = "issue: INC-3"
 }
