@@ -49,10 +49,13 @@ async function exec() {
       require('minimist')(process.argv.slice(2)), 
       require(process.env['GITHUB_EVENT_PATH'])
     )
+
     if (issueKey) {
       console.log(`Saving ${issueKey} to ${configPath}`)
       return fs.appendFileSync(configPath, `issue: ${issueKey}`)
     }
+
+    return process.exit(78) // code for canceling action
   } catch (error) {
     console.error(error)
     process.exit(1)
