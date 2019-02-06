@@ -26,5 +26,5 @@ if [ -z "$JIRA_API_TOKEN" ]; then
 else
     touch "$HOME/.jira.d/credentials"
     echo "JIRA_API_TOKEN=$JIRA_API_TOKEN" >> "$HOME/.jira.d/credentials"
-    echo "token: " >> "$HOME/jira/config.yml"
+    echo "token: $JIRA_API_TOKEN" >> "$HOME/jira/config.yml"
 fi
