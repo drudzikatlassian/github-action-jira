@@ -44,13 +44,18 @@ async function checkIssueExistance(issueId, baseUrl, token, email) {
 }
 
 async function exec() {
-  const issueKey = await getIssueKey(
-    require('minimist')(process.argv.slice(2)), 
-    require(process.env['GITHUB_EVENT_PATH'])
-  )
-  if (issueKey) {
-    console.log(`Saving ${issueKey} to ${configPath}`)
-    return fs.appendFileSync(configPath, `issue: ${issueKey}`)
+  try {
+    const issueKey = await getIssueKey(
+      require('minimist')(process.argv.slice(2)), 
+      require(process.env['GITHUB_EVENT_PATH'])
+    )
+    if (issueKey) {
+      console.log(`Saving ${issueKey} to ${configPath}`)
+      return fs.appendFileSync(configPath, `issue: ${issueKey}`)
+    }
+  } catch (error) {
+    console.error(error)
+    process.exit(1)
   }
 }
 
