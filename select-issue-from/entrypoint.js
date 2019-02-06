@@ -11,6 +11,7 @@ const jiraUserEmail = process.env['JIRA_USER_EMAIL']
 async function getIssueKey (args, githubEvent) {
   function getExtractString() {
     if (args.event) {
+      console.log(`Extracting from github event file, path:'${args.event}'`)
       return _.get(githubEvent, args.event)
     }
     return ''
@@ -19,7 +20,10 @@ async function getIssueKey (args, githubEvent) {
   const extractString = getExtractString()
   const match = extractString.match(issueIdRegEx)
 
-  if (!match) return
+  if (!match) {
+    console.log(`String "${extractString}" does not contain issueKeys`)
+    return
+  }
 
   for (issueKey of match) {
     console.log(`Checking existance of ${issueKey} at ${jiraBaseUrl}`)
