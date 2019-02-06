@@ -52,9 +52,9 @@ module.exports = class SelectIssueFrom {
         Authorization: auth
       }
     })
-    console.log('checkIssueExistance: ' + issueId + ' status: ' + res.status)
+    console.log('checkIssueExistance: ' + issueId + ' status: ' + result.status)
 
-    const jsonRes = await res.json()
+    const jsonRes = await result.json()
     console.log('json res:' + JSON.stringify(jsonRes, null, 4))
     return result.ok
   }
