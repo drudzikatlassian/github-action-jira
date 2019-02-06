@@ -15,8 +15,8 @@ async function exec() {
     const result = await action.execute()
 
     if (result) {
-      console.log(`Detected issueKey: ${issueKey} in string ${extractString}`)
-      console.log(`Saving ${issueKey} to ${cliConfigPath}`)
+      console.log(`Detected issueKey: ${result.issue}`)
+      console.log(`Saving ${result.issue} to ${cliConfigPath}`)
       return fs.appendFileSync(cliConfigPath, YAML.stringify(result))
     }
 
