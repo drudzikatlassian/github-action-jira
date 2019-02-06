@@ -1,78 +1,30 @@
-const _ = require('lodash')
-const fetch = require('node-fetch')
 const fs = require('fs')
-
-const configPath = process.env['HOME'] + '/.jira.d/config.yml'
-const issueIdRegEx = /([a-zA-Z0-9]+-[0-9]+)/g
-const jiraBaseUrl = process.env['JIRA_BASE_URL']
-const jiraApiToken = process.env['JIRA_API_TOKEN']
-const jiraUserEmail = process.env['JIRA_USER_EMAIL']
-
-async function getIssueKey (args, githubEvent) {
-  function getExtractString() {
-    if (args.event) {
-      console.log(`Extracting from github event file, path:'${args.event}'`)
-      return _.get(githubEvent, args.event)
-    }
-    return ''
-  }
-
-  const extractString = getExtractString()
-  const match = extractString.match(issueIdRegEx)
-
-  if (!match) {
-    console.log(`String "${extractString}" does not contain issueKeys`)
-    return
-  }
-
-  for (issueKey of match) {
-    console.log(`Checking existance of ${issueKey} at ${jiraBaseUrl}`)
-    const issueExists = await checkIssueExistance(issueKey, jiraBaseUrl, jiraApiToken, jiraUserEmail)
-    if (issueExists) {
-      console.log(`Detected issueKey: ${issueKey} in string ${extractString}`)
-      return issueKey
-    }
-  }
-}
-
-async function checkIssueExistance(issueId, baseUrl, token, email) {
-  const auth = 'Basic ' + Buffer.from(email + ':' + token).toString('base64');
-  const url = `${baseUrl}/rest/api/3/issue/${issueId}`
-  const result = await fetch(url, { 
-    method: 'GET',
-    headers: {
-      Authorization: auth
-    }
-  })
-  return result.ok
-}
+const YAML = require('yaml')
+const cliConfigPath = process.env['HOME'] + '/.jira.d/config.yml'
+const configPath = process.env['HOME'] + '/jira/config.yml'
+const SelectIssueFromAction = require('./SelectIssueFromAction')
 
 async function exec() {
-  try {
-    const issueKey = await getIssueKey(
-      require('minimist')(process.argv.slice(2)), 
-      require(process.env['GITHUB_EVENT_PATH'])
-    )
+  const action = new SelectIssueFromAction({
+    githubEvent: require(process.env['GITHUB_EVENT_PATH']),
+    args: require('minimist')(process.argv.slice(2)),
+    config: YAML.parse(fs.readFileSync(configPath, 'utf8'))
+  })
 
-    if (issueKey) {
-      console.log(`Saving ${issueKey} to ${configPath}`)
-      return fs.appendFileSync(configPath, `issue: ${issueKey}`)
+  try {
+    const result = await action.execute()
+
+    if (result) {
+      console.log(`Detected issueKey: ${issueKey} in string ${extractString}`)
+      console.log(`Saving ${issueKey} to ${cliConfigPath}`)
+      return fs.appendFileSync(cliConfigPath, YAML.stringify(result))
     }
 
-    return process.exit(78) // code for canceling action
+    process.exit(78)
   } catch (error) {
     console.error(error)
     process.exit(1)
   }
 }
 
-if (!module.parent) {
-  exec()
-}
-
-
-
-module.exports = {
-  getIssueKey
-}
-
+exec()
