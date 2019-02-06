@@ -52,6 +52,10 @@ module.exports = class SelectIssueFrom {
         Authorization: auth
       }
     })
+    console.log('checkIssueExistance: ' + issueId + ' status: ' + res.status)
+
+    const jsonRes = await res.json()
+    console.log('json res:' + JSON.stringify(jsonRes, null, 4))
     return result.ok
   }
 }
