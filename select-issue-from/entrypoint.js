@@ -19,6 +19,8 @@ async function getIssueKey (args, githubEvent) {
   const extractString = getExtractString()
   const match = extractString.match(issueIdRegEx)
 
+  if (!match) return
+
   for (issueKey of match) {
     console.log(`Checking existance of ${issueKey} at ${jiraBaseUrl}`)
     const issueExists = await checkIssueExistance(issueKey, jiraBaseUrl, jiraApiToken, jiraUserEmail)
