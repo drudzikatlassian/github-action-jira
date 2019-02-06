@@ -2,7 +2,6 @@ workflow "Build - Test - Publish" {
   on = "push"
   resolves = [
     "Add comment",
-    "Save Issue key",
     "Select Jira Issue From",
     "View issue",
   ]
