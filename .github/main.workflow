@@ -31,5 +31,5 @@ action "Jira Cloud Login" {
 action "Jira Cloud CLI" {
   uses = "./cli"
   needs = ["Jira Cloud Login"]
-  args = "create --template=custom"
+  args = "createmeta"
 }
