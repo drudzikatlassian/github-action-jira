@@ -1,7 +1,6 @@
 workflow "Build - Test - Publish" {
   on = "push"
   resolves = [
-    "Add comment",
     "Select Jira Issue From",
   ]
 }
@@ -35,10 +34,4 @@ action "Select Jira Issue From" {
   uses = "./select-issue-from"
   needs = ["Jira Cloud Login"]
   args = "--event=ref"
-}
-
-action "Add comment" {
-  uses = "./cli"
-  needs = ["Select Jira Issue From"]
-  args = "comment --noedit --comment=\"test comment\""
 }
