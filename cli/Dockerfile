@@ -4,7 +4,7 @@ LABEL "name"="Jira CLI action"
 LABEL "maintainer"="Dima Rudzik <githubactions+drudzik@atlassian.net>"
 LABEL "version"="1.0.0"
 
-LABEL "com.github.actions.name"="GitHub action for Jira Cloud"
+LABEL "com.github.actions.name"="Jira Cloud CLI"
 LABEL "com.github.actions.description"="Wraps the Jira CLI to enable Jira commands."
 LABEL "com.github.actions.icon"="check-square"
 LABEL "com.github.actions.color"="blue"
