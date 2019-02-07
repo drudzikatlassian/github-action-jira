@@ -8,6 +8,7 @@ const argv = require('yargs').parserConfiguration({
 }).argv
 
 async function exec() {
+  console.log('argv:', JSON.stringify(argv, null,4))
   const githubEvent = require(process.env['GITHUB_EVENT_PATH'])
   console.log(`githubEvent: ${JSON.stringify(githubEvent, null, 4)}` )
   const action = new CreateIssueAction({

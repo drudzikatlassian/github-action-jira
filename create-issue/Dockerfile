@@ -14,4 +14,4 @@ COPY package*.json ./
 RUN npm i
 COPY . .
 
-ENTRYPOINT ["node", "/entrypoint.js"]
+ENTRYPOINT ["entrypoint.sh"]
