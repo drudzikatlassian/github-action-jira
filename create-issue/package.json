@@ -12,7 +12,7 @@
     "lodash": "^4.17.11",
     "node-fetch": "^2.3.0",
     "yaml": "^1.3.1",
-    "yargs": "github:yargs/yargs#master"
+    "yargs": "^13.0.0-candidate.0"
   },
   "devDependencies": {
     "jest": "^24.1.0",
