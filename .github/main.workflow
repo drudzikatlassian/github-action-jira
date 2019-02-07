@@ -4,7 +4,6 @@ workflow "Build - Test - Publish" {
     "Add comment",
     "Select Jira Issue From",
     "View issue",
-    "GitHub action for Jira Cloud",
   ]
 }
 
