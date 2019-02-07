@@ -1,4 +1,4 @@
-FROM node:10-slim
+FROM node:10-alpine
 
 LABEL "name"="Select Jira Issue From"
 LABEL "maintainer"="Dima Rudzik <githubactions+drudzik@atlassian.net>"
