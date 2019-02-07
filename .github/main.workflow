@@ -1,8 +1,6 @@
 workflow "Build - Test - Publish" {
   on = "push"
-  resolves = [
-    "Select Jira Issue From",
-  ]
+  resolves = ["Jira Cloud CLI"]
 }
 
 action "Lint" {
@@ -30,8 +28,8 @@ action "Jira Cloud Login" {
   secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
 }
 
-action "Select Jira Issue From" {
-  uses = "./select-issue-from"
+action "Jira Cloud CLI" {
+  uses = "./cli"
   needs = ["Jira Cloud Login"]
-  args = "--event=ref"
+  args = "create --template=custom"
 }
