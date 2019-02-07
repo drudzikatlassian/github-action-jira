@@ -23,8 +23,6 @@ module.exports = class SelectIssueFrom {
     }
   
     for (const issueKey of match) {
-      console.log(`Checking existance of ${issueKey} at ${this.config.baseUrl}`)
-
       const issueExists = await this.checkIssueExistance(issueKey)
       
       if (issueExists) {
@@ -53,7 +51,7 @@ module.exports = class SelectIssueFrom {
       }
     })
     
-    console.log('checkIssueExistance: ' + issueId + ' status: ' + result.status)
+    console.log(`checkIssueExistance: ${issueId} at ${this.config.baseUrl} status: ${result.ok}`)
 
     return result.ok
   }
