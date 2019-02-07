@@ -1,6 +1,6 @@
 workflow "Build - Test - Publish" {
   on = "push"
-  resolves = ["View Issue"]
+  resolves = ["Transition Issue"]
 }
 
 action "Lint" {
@@ -46,14 +46,14 @@ action "Comment issue" {
   args = "comment --noedit --comment=\"Everything is awesome in $GITHUB_REPOSITORY\""
 }
 
-action "Transition Issue" {
+action "List issue transitions" {
   uses = "./cli"
   needs = ["Comment issue"]
-  args = "transition"
+  args = "transitions"
 }
 
-action "View Issue" {
+action "Transition Issue" {
   uses = "./cli"
-  needs = ["Transition Issue"]
-  args = "view"
+  needs = ["List issue transitions"]
+  args = "transition"
 }
