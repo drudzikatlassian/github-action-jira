@@ -1,4 +1,4 @@
-FROM node:10-slim
+FROM node:10-alpine
 
 LABEL "name"="Jira Cloud Create Issue"
 LABEL "maintainer"="Dima Rudzik <githubactions+drudzik@atlassian.net>"
@@ -13,5 +13,6 @@ LABEL "com.github.actions.color"="blue"
 COPY package*.json ./
 RUN npm i
 COPY . .
+RUN chmod +x entrypoint.sh
 
 ENTRYPOINT ["entrypoint.sh"]
