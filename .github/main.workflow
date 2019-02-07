@@ -1,6 +1,6 @@
 workflow "Build - Test - Publish" {
   on = "push"
-  resolves = ["Jira Cloud Create Issue"]
+  resolves = ["Comment issue"]
 }
 
 action "Lint" {
@@ -38,4 +38,10 @@ action "Jira Cloud Create Issue" {
   uses = "./create-issue"
   needs = ["Jira Cloud CLI"]
   args = "--fields.project.key=INC --fields.issuetype.name=Incident --fields.summary=Build_completed_for_$GITHUB_REPOSITORY --fields.customfield_10021.id=10001 --fields.description=This_is_description"
+}
+
+action "Comment issue" {
+  uses = "./cli"
+  needs = ["Jira Cloud Create Issue"]
+  args = "comment --noedit --comment=\"Everything is awesome in $GITHUB_REPOSITORY\""
 }
