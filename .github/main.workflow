@@ -50,9 +50,3 @@ action "View issue" {
   needs = ["Add comment"]
   args = "view INC-3"
 }
-
-action "GitHub action for Jira Cloud" {
-  uses = "./cli"
-  needs = ["Jira Cloud Login"]
-  args = "create"
-}
