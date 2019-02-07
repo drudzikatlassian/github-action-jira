@@ -1,6 +1,6 @@
 workflow "Build - Test - Publish" {
   on = "push"
-  resolves = ["Jira Cloud CLI"]
+  resolves = ["Jira Cloud Create Issue"]
 }
 
 action "Lint" {
@@ -32,4 +32,10 @@ action "Jira Cloud CLI" {
   uses = "./cli"
   needs = ["Jira Cloud Login"]
   args = "createmeta --project=INC --issuetype=Incident"
+}
+
+action "Jira Cloud Create Issue" {
+  uses = "./create-issue"
+  needs = ["Jira Cloud CLI"]
+  args = "--project=INC --issueType=Incident --summary=\"Build completed for $GITHUB_REPOSITORY\" --customfield_10021=10001"
 }
