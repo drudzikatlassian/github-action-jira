@@ -33,7 +33,7 @@ module.exports = class CreateIssue {
     console.log('jsonRes:' + JSON.stringify(jsonRes, null, 4))
     
     if (result.ok) {
-      return {issue: jsonRes.id}
+      return {issue: jsonRes.key}
     }
 
     return
