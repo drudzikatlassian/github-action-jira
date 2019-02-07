@@ -1,4 +1,5 @@
 const fetch = require('node-fetch')
+const _ = require('lodash')
 
 module.exports = class CreateIssue {
 
@@ -11,15 +12,6 @@ module.exports = class CreateIssue {
   async execute() {
     console.log(`argv:${JSON.stringify(this.argv, null, 4)}`)
     console.log('process.argv:' + JSON.stringify(process.argv, null, 4))
-    const {
-      fields
-    } = this.argv
-
-    const payload = {
-      fields
-    }
-
-    console.log('payload:' + JSON.stringify(payload, null, 4))
 
     const auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.token).toString('base64');
     const url = `${this.config.baseUrl}/rest/api/3/issue`
@@ -29,7 +21,7 @@ module.exports = class CreateIssue {
         Authorization: auth,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(_.omit(this.argv, ['_', '$0']))
     })
     
     console.log(`creating issue status: ${result.ok}`)
