@@ -3,7 +3,7 @@ const YAML = require('yaml')
 const cliConfigPath = process.env['HOME'] + '/.jira.d/config.yml'
 const configPath = process.env['HOME'] + '/jira/config.yml'
 const CreateIssueAction = require('./CreateIssueAction')
-const argv = require('yargs').argv
+const argv = require('yargs').string('_').argv
 
 async function exec() {
   const githubEvent = require(process.env['GITHUB_EVENT_PATH'])
