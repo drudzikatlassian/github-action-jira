@@ -1,13 +1,13 @@
 module.exports = class CreateIssue {
 
-  constructor ({ githubEvent, args, config }) {
+  constructor ({ githubEvent, argv, config }) {
     this.config = config
-    this.args = args
+    this.argv = argv
     this.githubEvent = githubEvent
   }
 
   async execute() {
-    console.log(`args:${JSON.stringify(this.args, null, 4)}`)
+    console.log(`argv:${JSON.stringify(this.argv, null, 4)}`)
 
     return
   }
