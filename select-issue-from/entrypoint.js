@@ -5,8 +5,10 @@ const configPath = process.env['HOME'] + '/jira/config.yml'
 const SelectIssueFromAction = require('./SelectIssueFromAction')
 
 async function exec() {
+  const githubEvent = require(process.env['GITHUB_EVENT_PATH'])
+  console.log(`githubEvent: ${JSON.stringify(githubEvent, null, 4)}` )
   const action = new SelectIssueFromAction({
-    githubEvent: require(process.env['GITHUB_EVENT_PATH']),
+    githubEvent,
     args: require('minimist')(process.argv.slice(2)),
     config: YAML.parse(fs.readFileSync(configPath, 'utf8'))
   })
@@ -20,6 +22,7 @@ async function exec() {
       return fs.appendFileSync(cliConfigPath, YAML.stringify(result))
     }
 
+    console.log('No issueKeys found.')
     process.exit(78)
   } catch (error) {
     console.error(error)
