@@ -14,7 +14,7 @@ module.exports = class CreateIssue {
     console.log('process.argv:' + JSON.stringify(process.argv, null, 4))
 
     const auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.token).toString('base64');
-    const url = `${this.config.baseUrl}/rest/api/3/issue`
+    const url = `${this.config.baseUrl}/rest/api/2/issue`
     const result = await fetch(url, { 
       method: 'POST',
       headers: {
