@@ -3,7 +3,6 @@ workflow "Build - Test - Publish" {
   resolves = [
     "Add comment",
     "Select Jira Issue From",
-    "View issue",
   ]
 }
 
@@ -42,10 +41,4 @@ action "Add comment" {
   uses = "./cli"
   needs = ["Select Jira Issue From"]
   args = "comment --noedit --comment=\"test comment\""
-}
-
-action "View issue" {
-  uses = "./cli"
-  needs = ["Add comment"]
-  args = "view INC-3"
 }
