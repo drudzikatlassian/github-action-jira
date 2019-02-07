@@ -13,15 +13,18 @@ module.exports = class CreateIssue {
     console.log(`argv:${JSON.stringify(this.argv, null, 4)}`)
     console.log('process.argv:' + JSON.stringify(process.argv, null, 4))
 
+    const payload = _.omit(this.argv, ['_', '$0'])
     const auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.token).toString('base64');
     const url = `${this.config.baseUrl}/rest/api/2/issue`
+
+    console.log('payload:' + JSON.stringify(payload, null, 4))
     const result = await fetch(url, { 
       method: 'POST',
       headers: {
         Authorization: auth,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(_.omit(this.argv, ['_', '$0']))
+      body: JSON.stringify(payload)
     })
     
     console.log(`creating issue status: ${result.ok}`)
