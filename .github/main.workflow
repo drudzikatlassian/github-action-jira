@@ -2,7 +2,6 @@ workflow "Build - Test - Publish" {
   on = "push"
   resolves = [
     "Add comment",
-    "Save Issue key",
     "Select Jira Issue From",
     "View issue",
   ]
@@ -33,15 +32,15 @@ action "Jira Cloud Login" {
   secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
 }
 
-action "Save Issue key" {
-  uses = "./cli-config"
+action "Select Jira Issue From" {
+  uses = "./select-issue-from"
   needs = ["Jira Cloud Login"]
-  args = "issue: INC-3"
+  args = "--event=ref"
 }
 
 action "Add comment" {
   uses = "./cli"
-  needs = ["Save Issue key"]
+  needs = ["Select Jira Issue From"]
   args = "comment --noedit --comment=\"test comment\""
 }
 
@@ -51,8 +50,3 @@ action "View issue" {
   args = "view INC-3"
 }
 
-action "Select Jira Issue From" {
-  uses = "./select-issue-from"
-  needs = ["Jira Cloud Login"]
-  args = "--event=ref"
-}
