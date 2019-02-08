@@ -1,20 +1,8 @@
 workflow "Build - Test - Publish" {
   on = "push"
   resolves = [
-    "Comment issue",
-    "Jira Cloud Login",
     "Jira CLI comment",
   ]
-}
-
-action "Jira Cloud Login" {
-  uses = "./actions/login"
-  secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
-}
-
-action "Comment issue" {
-  uses = "./actions/cli"
-  args = "comment --noedit --comment=\"Everything is awesome in $GITHUB_REPOSITORY\""
 }
 
 action "Jira Login" {
