@@ -1,6 +1,6 @@
 workflow "Build - Test - Publish" {
   on = "push"
-  resolves = ["Transition Issue"]
+  resolves = ["Jira Cloud Login", "Jira Cloud CLI", "Jira Cloud Create Issue", "Comment issue"]
 }
 
 action "Jira Cloud Login" {
