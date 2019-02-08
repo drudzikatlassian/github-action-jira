@@ -12,6 +12,7 @@ module.exports = class CreateIssue {
   async execute() {
     console.log(`argv:${JSON.stringify(this.argv, null, 4)}`)
     console.log('process.argv:' + JSON.stringify(process.argv, null, 4))
+    const argv = this.argv
 
     const payload = {
       fields: {
