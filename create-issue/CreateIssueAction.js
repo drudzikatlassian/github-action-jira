@@ -19,7 +19,7 @@ module.exports = class CreateIssue {
         project: {
           key: argv.project
         },
-        issyetype: {
+        issuetype: {
           name: argv.issuetype
         },
         summary: argv.summary,
