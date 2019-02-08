@@ -49,7 +49,7 @@ action "Comment issue" {
 action "List issue transitions" {
   uses = "./cli"
   needs = ["Comment issue"]
-  args = "transitions"
+  args = "transitions INC-62"
 }
 
 action "Transition Issue" {
