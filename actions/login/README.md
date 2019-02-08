@@ -9,4 +9,6 @@ Used to store credentials for later use in CLI action
 
 ## Produces
 ### Files
-- `$HOME/.jira.d/credentials` - Credentials file 
+- `$HOME/.jira.d/credentials` - Credentials file for CLI action
+- `$HOME/.jira.d/config.yml` - Config file for CLI action
+- `$HOME/jira/config.yml` - Config file for actions
