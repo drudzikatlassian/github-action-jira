@@ -13,7 +13,20 @@ module.exports = class CreateIssue {
     console.log(`argv:${JSON.stringify(this.argv, null, 4)}`)
     console.log('process.argv:' + JSON.stringify(process.argv, null, 4))
 
-    const payload = _.omit(this.argv, ['_', '$0'])
+    const payload = {
+      fields: {
+        project: {
+          key: argv.project
+        },
+        issyetype: {
+          name: argv.issuetype
+        },
+        summary: argv.summary,
+        description: argv.description,
+        ...argv.fields
+      }
+    }
+
     const auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.token).toString('base64');
     const url = `${this.config.baseUrl}/rest/api/2/issue`
 
