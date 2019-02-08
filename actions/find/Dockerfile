@@ -1,11 +1,11 @@
 FROM node:10-alpine
 
-LABEL "name"="Select Jira Issue From"
+LABEL "name"="Jira Find"
 LABEL "maintainer"="Dima Rudzik <githubactions+drudzik@atlassian.net>"
 LABEL "version"="1.0.0"
 
-LABEL "com.github.actions.name"="Select Jira Issue From"
-LABEL "com.github.actions.description"="Extract issue key"
+LABEL "com.github.actions.name"="Jira Find"
+LABEL "com.github.actions.description"="Find an issue inside event"
 LABEL "com.github.actions.icon"="check-square"
 LABEL "com.github.actions.color"="blue"
 

@@ -20,7 +20,7 @@ action "Jira Cloud CLI" {
 }
 
 action "Jira Cloud Create Issue" {
-  uses = "./actions/create-issue"
+  uses = "./actions/create"
   needs = ["Jira Cloud CLI"]
   args = "--project=INC --issuetype=Incident --summary=\"Build completed for $GITHUB_REPOSITORY\" --description=\"This is description\" --fields.customfield_10021.id=10001"
 }
