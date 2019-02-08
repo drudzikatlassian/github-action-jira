@@ -25,9 +25,3 @@ action "Comment issue" {
   needs = ["Jira Cloud Create Issue"]
   args = "comment --noedit --comment=\"Everything is awesome in $GITHUB_REPOSITORY\""
 }
-
-action "Transition Issue" {
-  uses = "./actions/cli"
-  needs = ["Comment issue"]
-  args = "transition Accept"
-}
