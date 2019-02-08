@@ -46,14 +46,8 @@ action "Comment issue" {
   args = "comment --noedit --comment=\"Everything is awesome in $GITHUB_REPOSITORY\""
 }
 
-action "List issue transitions" {
-  uses = "./cli"
-  needs = ["Comment issue"]
-  args = "transitions INC-62"
-}
-
 action "Transition Issue" {
   uses = "./cli"
-  needs = ["List issue transitions"]
-  args = "transition"
+  needs = ["Comment issue"]
+  args = "transition Accept"
 }
