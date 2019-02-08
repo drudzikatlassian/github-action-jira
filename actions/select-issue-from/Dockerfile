@@ -5,7 +5,7 @@ LABEL "maintainer"="Dima Rudzik <githubactions+drudzik@atlassian.net>"
 LABEL "version"="1.0.0"
 
 LABEL "com.github.actions.name"="Select Jira Issue From"
-LABEL "com.github.actions.description"="Write config parameters"
+LABEL "com.github.actions.description"="Extract issue key"
 LABEL "com.github.actions.icon"="check-square"
 LABEL "com.github.actions.color"="blue"
 
