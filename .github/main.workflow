@@ -1,6 +1,6 @@
 workflow "Build - Test - Publish" {
   on = "push"
-  resolves = ["Transition Issue"]
+  resolves = ["Comment issue"]
 }
 
 action "Lint" {
@@ -44,10 +44,4 @@ action "Comment issue" {
   uses = "./cli"
   needs = ["Jira Cloud Create Issue"]
   args = "comment --noedit --comment=\"Everything is awesome in $GITHUB_REPOSITORY\""
-}
-
-action "Transition Issue" {
-  uses = "./cli"
-  needs = ["Comment issue"]
-  args = "transition Accept"
 }
