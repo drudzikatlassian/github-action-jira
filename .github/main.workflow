@@ -23,31 +23,30 @@ action "Publish Filter" {
 }
 
 action "Jira Cloud Login" {
-  uses = "./login"
-  needs = ["Build"]
+  uses = "./actions/login"
   secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
 }
 
 action "Jira Cloud CLI" {
-  uses = "./cli"
+  uses = "./actions/cli"
   needs = ["Jira Cloud Login"]
   args = "createmeta --project=INC --issuetype=Incident"
 }
 
 action "Jira Cloud Create Issue" {
-  uses = "./create-issue"
+  uses = "./actions/create-issue"
   needs = ["Jira Cloud CLI"]
   args = "--project=INC --issuetype=Incident --summary=\"Build completed for $GITHUB_REPOSITORY\" --description=\"This is description\" --fields.customfield_10021.id=10001"
 }
 
 action "Comment issue" {
-  uses = "./cli"
+  uses = "./actions/cli"
   needs = ["Jira Cloud Create Issue"]
   args = "comment --noedit --comment=\"Everything is awesome in $GITHUB_REPOSITORY\""
 }
 
 action "Transition Issue" {
-  uses = "./cli"
+  uses = "./actions/cli"
   needs = ["Comment issue"]
   args = "transition Accept"
 }
