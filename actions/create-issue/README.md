@@ -1,4 +1,4 @@
-# Create issue
+# Jira Create
 Creates issue
 ## Arguments
 - `--project=<project key>` - Key of the project
