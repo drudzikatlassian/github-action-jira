@@ -1,10 +1,9 @@
 workflow "Build - Test - Publish" {
   on = "push"
   resolves = [
-    "Jira Cloud CLI",
-    "Jira Cloud Create Issue",
     "Comment issue",
     "Jira Cloud Login",
+    "Jira CLI comment",
   ]
 }
 
@@ -13,20 +12,24 @@ action "Jira Cloud Login" {
   secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
 }
 
-action "Jira Cloud CLI" {
+action "Comment issue" {
   uses = "./actions/cli"
-  needs = ["Jira Cloud Login"]
-  args = "createmeta --project=INC --issuetype=Incident"
+  args = "comment --noedit --comment=\"Everything is awesome in $GITHUB_REPOSITORY\""
 }
 
-action "Jira Cloud Create Issue" {
+action "Jira Login" {
+  uses = "./actions/login"
+  secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
+}
+
+action "Jira Create" {
   uses = "./actions/create"
-  needs = ["Jira Cloud CLI"]
+  needs = ["Jira Login"]
   args = "--project=INC --issuetype=Incident --summary=\"Build completed for $GITHUB_REPOSITORY\" --description=\"This is description\" --fields.customfield_10021.id=10001"
 }
 
-action "Comment issue" {
+action "Jira CLI comment" {
   uses = "./actions/cli"
-  needs = ["Jira Cloud Create Issue"]
+  needs = ["Jira Create"]
   args = "comment --noedit --comment=\"Everything is awesome in $GITHUB_REPOSITORY\""
 }
