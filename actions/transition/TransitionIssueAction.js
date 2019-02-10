@@ -48,6 +48,7 @@ module.exports = class TransitionIssueAction {
         }
       })
     })
+    return result
   }
 
   async getTransitions(issueKey) {
