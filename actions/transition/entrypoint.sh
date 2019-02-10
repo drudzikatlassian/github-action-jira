@@ -1,4 +1,4 @@
 #!/bin/sh
 set -eu
 
-echo "Not implemented"
+sh -c "node /index.js $*"
