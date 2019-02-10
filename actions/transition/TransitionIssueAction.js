@@ -18,9 +18,9 @@ module.exports = class TransitionIssueAction {
     const transitions = await this.getTransitions(argv.issue)
     console.log(`transitions: ${JSON.stringify(transitions, null, 4)}`)
 
+    console.log('Possible transitions flags:')
     transitions.forEach(t => {
-      console.log('Possible transitions flags:')
-      console.log(`-f ${t.to.id} transitions to ${t.to.name}`)
+      console.log(`-t ${t.to.id} : transitions to '${t.to.name}'`)
     })
 
     return
