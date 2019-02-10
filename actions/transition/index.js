@@ -10,6 +10,13 @@ async function exec() {
   const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
 
   yargs
+    .option('issue', {
+      alias: 'i',
+      describe: 'Provide an issue key to perform a transition on',
+      demandOption: config.issue ? false : true,
+      default: config.issue,
+      type: 'string'
+    })
     .option('transition', {
       alias: 't',
       describe: 'Provide a state to transition issue to',

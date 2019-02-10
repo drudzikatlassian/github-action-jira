@@ -7,6 +7,7 @@ module.exports = class TransitionIssueAction {
     this.config = config
     this.argv = argv
     this.githubEvent = githubEvent
+    this.auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.token).toString('base64')
   }
 
   async execute() {
@@ -14,6 +15,23 @@ module.exports = class TransitionIssueAction {
     console.log('process.argv:' + JSON.stringify(process.argv, null, 4))
     const argv = this.argv
 
+    const transitions = await this.getTransitions(argv.issue)
+    console.log(`transitions: ${JSON.stringify(transitions, null, 4)}`)
+
     return
   }
+
+  async getTransitions(issueKey) {
+    const url = `${this.config.baseUrl}/rest/api/2/issue/${issueKey}/transitions`
+    const result = await fetch(url, { 
+      method: 'GET',
+      headers: {
+        Authorization: this.auth,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    return result.json()
+  }
+  
 }
