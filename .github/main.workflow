@@ -1,8 +1,6 @@
 workflow "Build - Test - Publish" {
   on = "push"
-  resolves = [
-    "Jira CLI comment",
-  ]
+  resolves = ["Jira Transition"]
 }
 
 action "Jira Login" {
@@ -20,4 +18,10 @@ action "Jira CLI comment" {
   uses = "./actions/cli"
   needs = ["Jira Create"]
   args = "comment --noedit --comment=\"Everything is awesome in $GITHUB_REPOSITORY\""
+}
+
+action "Jira Transition" {
+  uses = "./actions/transition"
+  needs = ["Jira CLI comment"]
+  args = "-t Accept"
 }
