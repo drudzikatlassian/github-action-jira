@@ -3,6 +3,7 @@ const YAML = require('yaml')
 const cliConfigPath = process.env['HOME'] + '/.jira.d/config.yml'
 const configPath = process.env['HOME'] + '/jira/config.yml'
 const CreateIssueAction = require('./CreateIssueAction')
+const _ = require('lodash')
 
 
 async function exec() {
@@ -61,7 +62,16 @@ async function exec() {
     if (result) {
       console.log(`Created issue: ${result.issue}`)
       console.log(`Saving ${result.issue} to ${cliConfigPath}`)
-      return fs.appendFileSync(cliConfigPath, YAML.stringify(result))
+      console.log(`Saving ${result.issue} to ${configPath}`)
+      const yamledResult = YAML.stringify(result)
+
+      const extendedConfig = {
+        ...config,
+        ...result
+      }
+
+      fs.appendFileSync(configPath, YAML.stringify(extendedConfig))
+      return fs.appendFileSync(cliConfigPath, yamledResult)
     }
 
     console.log('Failed to create issue.')
