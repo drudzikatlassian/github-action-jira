@@ -8,7 +8,7 @@ const TransitionIssueAction = require('./TransitionIssueAction')
 async function exec() {
   const yargs = require('yargs')
   const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
-
+  console.log('config:' + JSON.stringify(config, null, 4))
   yargs
     .option('issue', {
       alias: 'i',
