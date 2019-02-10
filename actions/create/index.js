@@ -65,12 +65,9 @@ async function exec() {
       console.log(`Saving ${result.issue} to ${configPath}`)
       const yamledResult = YAML.stringify(result)
 
-      const extendedConfig = {
-        ...config,
-        ...result
-      }
+      const extendedConfig = Object.assign({}, config, result)
 
-      fs.appendFileSync(configPath, YAML.stringify(extendedConfig))
+      fs.writeFileSync(configPath, YAML.stringify(extendedConfig))
       return fs.appendFileSync(cliConfigPath, yamledResult)
     }
 
