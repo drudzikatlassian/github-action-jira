@@ -23,7 +23,31 @@ module.exports = class TransitionIssueAction {
       console.log(`-t ${t.to.id} : transitions to '${t.to.name}'`)
     })
 
+    const result = await this.transitionTo(argv.issue, argv.transition)
+
+    if (result.ok) {
+      const jsonRes = await result.json()
+      console.log('jsonRes:' + JSON.stringify(jsonRes, null, 4))
+      return {}
+    }
+
     return
+  }
+
+  async transitionTo(issueKey, transitionId) {
+    const url = `${this.config.baseUrl}/rest/api/3/issue/${issueKey}/transitions`
+    const result = await fetch(url, { 
+      method: 'POST',
+      headers: {
+        Authorization: this.auth,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        transition: {
+          id: transitionId
+        }
+      })
+    })
   }
 
   async getTransitions(issueKey) {
