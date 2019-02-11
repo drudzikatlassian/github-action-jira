@@ -1,44 +1,46 @@
 const fs = require('fs')
 const YAML = require('yaml')
-const cliConfigPath = process.env['HOME'] + '/.jira.d/config.yml'
-const configPath = process.env['HOME'] + '/jira/config.yml'
+
+const cliConfigPath = `${process.env.HOME}/.jira.d/config.yml`
+const configPath = `${process.env.HOME}/jira/config.yml`
 const TransitionIssueAction = require('./TransitionIssueAction')
 
-
-async function exec() {
+async function exec () {
   const yargs = require('yargs')
   const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
-  console.log('config:' + JSON.stringify(config, null, 4))
+
+  console.log(`config:${JSON.stringify(config, null, 4)}`)
   yargs
     .option('issue', {
       alias: 'i',
       describe: 'Provide an issue key to perform a transition on',
-      demandOption: config.issue ? false : true,
+      demandOption: !config.issue,
       default: config.issue,
-      type: 'string'
+      type: 'string',
     })
     .option('transition', {
       alias: 't',
       describe: 'Provide a state to transition issue to',
-      demandOption: config.transition ? false : true,
+      demandOption: !config.transition,
       default: config.transtion,
-      type: 'string'
+      type: 'string',
     })
-  
+
   yargs
     .parserConfiguration({
-      "parse-numbers": false,
+      'parse-numbers': false,
     })
 
-  const argv = yargs.argv
+  const { argv } = yargs
 
-  console.log('argv:', JSON.stringify(argv, null,4))
-  const githubEvent = require(process.env['GITHUB_EVENT_PATH'])
-  console.log(`githubEvent: ${JSON.stringify(githubEvent, null, 4)}` )
+  console.log('argv:', JSON.stringify(argv, null, 4))
+  const githubEvent = require(process.env.GITHUB_EVENT_PATH)
+
+  console.log(`githubEvent: ${JSON.stringify(githubEvent, null, 4)}`)
   const action = new TransitionIssueAction({
     githubEvent,
     argv,
-    config
+    config,
   })
 
   try {

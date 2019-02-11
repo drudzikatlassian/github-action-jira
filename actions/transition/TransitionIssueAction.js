@@ -1,5 +1,5 @@
 const fetch = require('node-fetch')
-const Jira = require('./Jira')
+const Jira = require('./common/net/Jira')
 
 export default class TransitionIssueAction {
   constructor ({ githubEvent, argv, config }) {

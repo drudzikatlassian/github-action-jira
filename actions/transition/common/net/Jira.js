@@ -1,5 +1,5 @@
 const serviceName = 'jira'
-const client = require('./httpClient')(serviceName)
+const client = require('./client')(serviceName)
 
 class Jira {
   constructor ({ baseUrl, token, email }) {
