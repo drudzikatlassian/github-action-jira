@@ -45,7 +45,7 @@ module.exports = class {
     }
 
     if (this.argv.string) {
-      return this.args.string
+      return this.argv.string
     }
   
     return ''
