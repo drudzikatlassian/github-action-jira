@@ -1,4 +1,5 @@
 const serviceName = 'jira'
+const { format } = require('url')
 const client = require('./client')(serviceName)
 
 class Jira {
