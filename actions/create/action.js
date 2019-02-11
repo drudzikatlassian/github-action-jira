@@ -33,15 +33,12 @@ module.exports = class {
       }
     }
 
-    const result = await this.Jira.createIssue(payload)
+    const issue = await this.Jira.createIssue(payload)
     
-    console.log(`creating issue status: ${result.ok}`)
-
-    const jsonRes = await result.json()
-    console.log('jsonRes:' + JSON.stringify(jsonRes, null, 4))
+    console.log('created issue:' + JSON.stringify(issue, null, 4))
     
     if (result.ok) {
-      return {issue: jsonRes.key}
+      return {issue: issue.key}
     }
 
     return
