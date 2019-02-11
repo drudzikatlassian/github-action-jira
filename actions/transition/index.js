@@ -6,11 +6,36 @@ const cliConfigPath = `${process.env.HOME}/.jira.d/config.yml`
 const configPath = `${process.env.HOME}/jira/config.yml`
 const Action = require('./action')
 
+// eslint-disable-next-line import/no-dynamic-require
+const githubEvent = require(process.env.GITHUB_EVENT_PATH)
+const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
+
 async function exec () {
-  const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
+  try {
+    const result = await new Action({
+      githubEvent,
+      argv: parseArgs(),
+      config,
+    }).execute()
 
-  console.log(`config:${JSON.stringify(config, null, 4)}`)
+    if (result) {
+      const yamledResult = YAML.stringify(result)
+      const extendedConfig = Object.assign({}, config, result)
 
+      fs.writeFileSync(configPath, YAML.stringify(extendedConfig))
+
+      return fs.appendFileSync(cliConfigPath, yamledResult)
+    }
+
+    console.log('Failed to transition issue.')
+    process.exit(78)
+  } catch (error) {
+    console.error(error)
+    process.exit(1)
+  }
+}
+
+function parseArgs () {
   yargs
     .option('issue', {
       alias: 'i',
@@ -32,30 +57,7 @@ async function exec () {
       'parse-numbers': false,
     })
 
-  const { argv } = yargs
-
-  console.log('argv:', JSON.stringify(argv, null, 4))
-  const githubEvent = require(process.env.GITHUB_EVENT_PATH)
-
-  console.log(`githubEvent: ${JSON.stringify(githubEvent, null, 4)}`)
-
-  try {
-    const result = await new Action({
-      githubEvent,
-      argv,
-      config,
-    }).execute()
-
-    if (result) {
-      return
-    }
-
-    console.log('Failed to transition issue.')
-    process.exit(78)
-  } catch (error) {
-    console.error(error)
-    process.exit(1)
-  }
+  return yargs.argv
 }
 
 exec()
