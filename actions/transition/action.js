@@ -12,7 +12,6 @@ module.exports = class {
     this.config = config
     this.argv = argv
     this.githubEvent = githubEvent
-    this.auth = `Basic ${Buffer.from(`${this.config.email}:${this.config.token}`).toString('base64')}`
   }
 
   async execute () {
