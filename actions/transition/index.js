@@ -1,12 +1,12 @@
 const fs = require('fs')
 const YAML = require('yaml')
+const yargs = require('yargs')
 
 const cliConfigPath = `${process.env.HOME}/.jira.d/config.yml`
 const configPath = `${process.env.HOME}/jira/config.yml`
 const TransitionIssueAction = require('./TransitionIssueAction')
 
 async function exec () {
-  const yargs = require('yargs')
   const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
 
   console.log(`config:${JSON.stringify(config, null, 4)}`)
