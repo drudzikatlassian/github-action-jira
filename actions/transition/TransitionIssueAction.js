@@ -20,7 +20,7 @@ module.exports = class TransitionIssueAction {
 
     console.log('Possible transitions flags:')
     transitions.forEach(t => {
-      console.log(`-t ${t.to.id} : transitions to '${t.to.name}'`)
+      console.log(`-t ${t.id} : '${t.name}' transitions to '${t.to.name}'`)
     })
 
     const result = await this.transitionTo(argv.issue, argv.transition)
