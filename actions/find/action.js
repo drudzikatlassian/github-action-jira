@@ -1,14 +1,19 @@
 const _ = require('lodash')
-const fetch = require('node-fetch')
-const fs = require('fs')
+const Jira = require('./common/net/Jira')
 
 const issueIdRegEx = /([a-zA-Z0-9]+-[0-9]+)/g
 
 module.exports = class {
 
   constructor ({ githubEvent, args, config }) {
+    this.Jira = new Jira({
+      baseUrl: config.baseUrl,
+      token: config.token,
+      email: config.email,
+    })
+
     this.config = config
-    this.args = args
+    this.argv = argv
     this.githubEvent = githubEvent
   }
 
@@ -23,10 +28,10 @@ module.exports = class {
     }
   
     for (const issueKey of match) {
-      const issueExists = await this.checkIssueExistance(issueKey)
+      const issue = await this.Jira.getIssue(issueKey)
       
-      if (issueExists) {
-        return { issue: issueKey }
+      if (issue) {
+        return { issue: issue.key }
       }
     }
 
@@ -39,20 +44,5 @@ module.exports = class {
       return _.get(this.githubEvent, this.args.event)
     }
     return ''
-  }
-
-  async checkIssueExistance(issueId) {
-    const auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.token).toString('base64');
-    const url = `${this.config.baseUrl}/rest/api/3/issue/${issueId}`
-    const result = await fetch(url, { 
-      method: 'GET',
-      headers: {
-        Authorization: auth
-      }
-    })
-    
-    console.log(`checkIssueExistance: ${issueId} at ${this.config.baseUrl} status: ${result.ok}`)
-
-    return result.ok
   }
 }
