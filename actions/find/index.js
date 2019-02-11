@@ -3,14 +3,18 @@ const YAML = require('yaml')
 const cliConfigPath = process.env['HOME'] + '/.jira.d/config.yml'
 const configPath = process.env['HOME'] + '/jira/config.yml'
 const Action = require('./action')
+const yargs = require('yargs')
 
 async function exec() {
   const githubEvent = require(process.env['GITHUB_EVENT_PATH'])
+  const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
+  const { argv } = yargs 
   console.log(`githubEvent: ${JSON.stringify(githubEvent, null, 4)}` )
+  
   const action = new Action({
     githubEvent,
-    argv: require('yargs').argv,
-    config: YAML.parse(fs.readFileSync(configPath, 'utf8'))
+    argv,
+    config
   })
 
   try {
