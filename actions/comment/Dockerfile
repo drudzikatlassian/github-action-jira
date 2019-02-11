@@ -10,6 +10,8 @@ LABEL "com.github.actions.icon"="check-square"
 LABEL "com.github.actions.color"="blue"
 
 
+COPY package*.json ./
+RUN npm i
 COPY . .
 RUN chmod +x /entrypoint.sh
 
