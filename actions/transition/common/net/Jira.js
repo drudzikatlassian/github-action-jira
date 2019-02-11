@@ -30,7 +30,7 @@ class Jira {
     { host, pathname, query },
     { method, body, headers = {} } = {}) {
     const url = format({
-      host: host || this._instance.baseUrl,
+      host: host || this.baseUrl,
       pathname,
       query,
     })
