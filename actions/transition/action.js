@@ -20,7 +20,7 @@ module.exports = class {
     console.log(`process.argv:${JSON.stringify(process.argv, null, 4)}`)
     const { argv } = this
 
-    const transitions = await this.Jira.getIssueTransitions(argv.issue)
+    const { transitions } = await this.Jira.getIssueTransitions(argv.issue)
 
     console.log(`transitions: ${JSON.stringify(transitions, null, 4)}`)
 
