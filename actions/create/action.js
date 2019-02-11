@@ -27,9 +27,12 @@ module.exports = class {
           name: argv.issuetype,
         },
         summary: argv.summary,
-        description: argv.description,
         ...argv.fields,
       },
+    }
+
+    if (argv.description) {
+      payload.fields.description = argv.description
     }
 
     const issue = await this.Jira.createIssue(payload)
