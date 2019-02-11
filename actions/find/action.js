@@ -43,6 +43,11 @@ module.exports = class {
       console.log(`Extracting from github event file, path:'${this.args.event}'`)
       return _.get(this.githubEvent, this.args.event)
     }
+
+    if (this.args.string) {
+      return this.args.string
+    }
+  
     return ''
   }
 }
