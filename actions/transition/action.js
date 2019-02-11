@@ -14,8 +14,6 @@ module.exports = class {
   }
 
   async execute () {
-    console.log(`argv:${JSON.stringify(this.argv, null, 4)}`)
-    console.log(`process.argv:${JSON.stringify(process.argv, null, 4)}`)
     const { argv } = this
 
     const issueId = argv.issue
@@ -23,9 +21,7 @@ module.exports = class {
 
     const { transitions } = await this.Jira.getIssueTransitions(issueId)
 
-    console.log(`transitions: ${JSON.stringify(transitions, null, 4)}`)
-
-    console.log('Possible transitions flags:')
+    console.log('Possible transition options:')
     transitions.forEach((t) => {
       console.log(`-t ${t.id} : '${t.name}' transitions to '${t.to.name}'`)
     })

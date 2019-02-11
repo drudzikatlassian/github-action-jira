@@ -14,8 +14,6 @@ module.exports = class {
   }
 
   async execute () {
-    console.log(`argv:${JSON.stringify(this.argv, null, 4)}`)
-    console.log(`process.argv:${JSON.stringify(process.argv, null, 4)}`)
     const issueId = this.argv.issue
     const { comment } = this.argv
 

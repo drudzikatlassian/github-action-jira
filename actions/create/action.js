@@ -14,8 +14,6 @@ module.exports = class {
   }
 
   async execute () {
-    console.log(`argv:${JSON.stringify(this.argv, null, 4)}`)
-    console.log(`process.argv:${JSON.stringify(process.argv, null, 4)}`)
     const { argv } = this
 
     const payload = {
@@ -36,8 +34,6 @@ module.exports = class {
     }
 
     const issue = await this.Jira.createIssue(payload)
-
-    console.log(`created issue:${JSON.stringify(issue, null, 4)}`)
 
     return { issue: issue.key }
   }
