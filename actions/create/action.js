@@ -1,7 +1,6 @@
 const Jira = require('./common/net/Jira')
 
 module.exports = class {
-
   constructor ({ githubEvent, argv, config }) {
     this.Jira = new Jira({
       baseUrl: config.baseUrl,
@@ -14,29 +13,29 @@ module.exports = class {
     this.githubEvent = githubEvent
   }
 
-  async execute() {
+  async execute () {
     console.log(`argv:${JSON.stringify(this.argv, null, 4)}`)
-    console.log('process.argv:' + JSON.stringify(process.argv, null, 4))
-    const argv = this.argv
+    console.log(`process.argv:${JSON.stringify(process.argv, null, 4)}`)
+    const { argv } = this
 
     const payload = {
       fields: {
         project: {
-          key: argv.project
+          key: argv.project,
         },
         issuetype: {
-          name: argv.issuetype
+          name: argv.issuetype,
         },
         summary: argv.summary,
         description: argv.description,
-        ...argv.fields
-      }
+        ...argv.fields,
+      },
     }
 
     const issue = await this.Jira.createIssue(payload)
-    
-    console.log('created issue:' + JSON.stringify(issue, null, 4))
-    
-    return {issue: issue.key}
+
+    console.log(`created issue:${JSON.stringify(issue, null, 4)}`)
+
+    return { issue: issue.key }
   }
 }

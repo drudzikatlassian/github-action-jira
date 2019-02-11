@@ -1,59 +1,59 @@
 const fs = require('fs')
 const YAML = require('yaml')
-const cliConfigPath = process.env['HOME'] + '/.jira.d/config.yml'
-const configPath = process.env['HOME'] + '/jira/config.yml'
+
+const cliConfigPath = `${process.env.HOME}/.jira.d/config.yml`
+const configPath = `${process.env.HOME}/jira/config.yml`
+const yargs = require('yargs')
 const Action = require('./action')
-const _ = require('lodash')
 
-
-async function exec() {
-  const yargs = require('yargs')
+async function exec () {
   const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
 
   yargs
     .option('project', {
       alias: 'p',
       describe: 'Provide project to create issue in',
-      demandOption: config.project ? false : true,
+      demandOption: !config.project,
       default: config.project,
-      type: 'string'
+      type: 'string',
     })
     .option('issuetype', {
       alias: 't',
       describe: 'Provide type of the issue to be created',
-      demandOption: config.issuetype ? false : true,
+      demandOption: !config.issuetype,
       default: config.issuetype,
-      type: 'string'
+      type: 'string',
     })
     .option('summary', {
       alias: 's',
       describe: 'Provide summary for the issue',
-      demandOption: config.summary ? false : true,
+      demandOption: !config.summary,
       default: config.summary,
-      type: 'string'
+      type: 'string',
     })
     .option('description', {
       alias: 'd',
       describe: 'Provide issue description',
-      demandOption: config.description ? false : true,
+      demandOption: !config.description,
       default: config.description,
-      type: 'string'
+      type: 'string',
     })
-  
+
   yargs
     .parserConfiguration({
-      "parse-numbers": false,
+      'parse-numbers': false,
     })
 
-  const argv = yargs.argv
+  const { argv } = yargs
 
-  console.log('argv:', JSON.stringify(argv, null,4))
-  const githubEvent = require(process.env['GITHUB_EVENT_PATH'])
-  console.log(`githubEvent: ${JSON.stringify(githubEvent, null, 4)}` )
+  console.log('argv:', JSON.stringify(argv, null, 4))
+  const githubEvent = require(process.env.GITHUB_EVENT_PATH)
+
+  console.log(`githubEvent: ${JSON.stringify(githubEvent, null, 4)}`)
   const action = new Action({
     githubEvent,
     argv,
-    config
+    config,
   })
 
   try {
@@ -68,6 +68,7 @@ async function exec() {
       const extendedConfig = Object.assign({}, config, result)
 
       fs.writeFileSync(configPath, YAML.stringify(extendedConfig))
+
       return fs.appendFileSync(cliConfigPath, yamledResult)
     }
 
