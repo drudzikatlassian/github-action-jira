@@ -9,7 +9,7 @@ async function exec() {
   console.log(`githubEvent: ${JSON.stringify(githubEvent, null, 4)}` )
   const action = new Action({
     githubEvent,
-    args: require('yargs').argv,
+    argv: require('yargs').argv,
     config: YAML.parse(fs.readFileSync(configPath, 'utf8'))
   })
 

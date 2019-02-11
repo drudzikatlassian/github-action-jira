@@ -5,7 +5,7 @@ const issueIdRegEx = /([a-zA-Z0-9]+-[0-9]+)/g
 
 module.exports = class {
 
-  constructor ({ githubEvent, args, config }) {
+  constructor ({ githubEvent, argv, config }) {
     this.Jira = new Jira({
       baseUrl: config.baseUrl,
       token: config.token,
@@ -39,12 +39,12 @@ module.exports = class {
   }
 
   getExtractString() {
-    if (this.args.event) {
+    if (this.argv.event) {
       console.log(`Extracting from github event file, path:'${this.args.event}'`)
       return _.get(this.githubEvent, this.args.event)
     }
 
-    if (this.args.string) {
+    if (this.argv.string) {
       return this.args.string
     }
   
