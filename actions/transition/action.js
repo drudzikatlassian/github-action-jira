@@ -40,35 +40,4 @@ module.exports = class {
 
     return {}
   }
-
-  async transitionTo (issueKey, transitionId) {
-    const url = `${this.config.baseUrl}/rest/api/3/issue/${issueKey}/transitions`
-    const result = await fetch(url, {
-      method: 'POST',
-      headers: {
-        Authorization: this.auth,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        transition: {
-          id: transitionId,
-        },
-      }),
-    })
-
-    return result
-  }
-
-  async getTransitions (issueKey) {
-    const url = `${this.config.baseUrl}/rest/api/2/issue/${issueKey}/transitions`
-    const result = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: this.auth,
-        'Content-Type': 'application/json',
-      },
-    })
-
-    return (await result.json()).transitions
-  }
 }
