@@ -25,11 +25,12 @@ module.exports = class TransitionIssueAction {
 
     const result = await this.transitionTo(argv.issue, argv.transition)
 
+    const jsonRes = await result.json()
+    console.log('jsonRes:' + JSON.stringify(jsonRes, null, 4))
     if (result.ok) {
-      const jsonRes = await result.json()
-      console.log('jsonRes:' + JSON.stringify(jsonRes, null, 4))
       return {}
     }
+    console.log('Failed to transition:' + result)
 
     return
   }
