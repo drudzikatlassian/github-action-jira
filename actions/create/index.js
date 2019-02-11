@@ -2,7 +2,7 @@ const fs = require('fs')
 const YAML = require('yaml')
 const cliConfigPath = process.env['HOME'] + '/.jira.d/config.yml'
 const configPath = process.env['HOME'] + '/jira/config.yml'
-const CreateIssueAction = require('./CreateIssueAction')
+const Action = require('./action')
 const _ = require('lodash')
 
 
@@ -50,7 +50,7 @@ async function exec() {
   console.log('argv:', JSON.stringify(argv, null,4))
   const githubEvent = require(process.env['GITHUB_EVENT_PATH'])
   console.log(`githubEvent: ${JSON.stringify(githubEvent, null, 4)}` )
-  const action = new CreateIssueAction({
+  const action = new Action({
     githubEvent,
     argv,
     config

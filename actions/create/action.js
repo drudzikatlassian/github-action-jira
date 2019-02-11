@@ -1,9 +1,14 @@
-const fetch = require('node-fetch')
-const _ = require('lodash')
+const Jira = require('./common/net/Jira')
 
-module.exports = class CreateIssue {
+module.exports = class {
 
   constructor ({ githubEvent, argv, config }) {
+    this.Jira = new Jira({
+      baseUrl: config.baseUrl,
+      token: config.token,
+      email: config.email,
+    })
+
     this.config = config
     this.argv = argv
     this.githubEvent = githubEvent
@@ -28,18 +33,7 @@ module.exports = class CreateIssue {
       }
     }
 
-    const auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.token).toString('base64');
-    const url = `${this.config.baseUrl}/rest/api/2/issue`
-
-    console.log('payload:' + JSON.stringify(payload, null, 4))
-    const result = await fetch(url, { 
-      method: 'POST',
-      headers: {
-        Authorization: auth,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    })
+    const result = await this.Jira.createIssue(payload)
     
     console.log(`creating issue status: ${result.ok}`)
 

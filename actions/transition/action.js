@@ -1,4 +1,3 @@
-const fetch = require('node-fetch')
 const Jira = require('./common/net/Jira')
 
 module.exports = class {
