@@ -19,7 +19,7 @@ module.exports = class {
     const issueId = this.argv.issue
     const { comment } = this.argv
 
-    await this.Jira.addComment(issueId, comment)
+    await this.Jira.addComment(issueId, { body: comment })
 
     return {}
   }
