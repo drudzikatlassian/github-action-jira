@@ -17,10 +17,10 @@ action "Jira Create" {
   args = "--project=INC --issuetype=Incident --summary=\"Build completed for $GITHUB_REPOSITORY\" --description=\"This is description\" --fields.customfield_10021.id=10001"
 }
 
-action "Jira CLI comment" {
-  uses = "./actions/cli"
+action "Jira Comment" {
+  uses = "./actions/comment"
   needs = ["Jira Create"]
-  args = "comment --noedit --comment=\"Everything is awesome in $GITHUB_REPOSITORY\""
+  args = "--comment=\"Everything is awesome in $GITHUB_REPOSITORY\""
 }
 
 action "Jira Transition" {
