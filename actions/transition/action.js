@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 const Jira = require('./common/net/Jira')
 
-module.exports = class TransitionIssueAction {
+module.exports = class {
   constructor ({ githubEvent, argv, config }) {
     this.Jira = new Jira({
       baseUrl: config.baseUrl,

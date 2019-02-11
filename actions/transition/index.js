@@ -4,7 +4,7 @@ const yargs = require('yargs')
 
 const cliConfigPath = `${process.env.HOME}/.jira.d/config.yml`
 const configPath = `${process.env.HOME}/jira/config.yml`
-const TransitionIssueAction = require('./TransitionIssueAction')
+const Action = require('./action')
 
 async function exec () {
   const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
@@ -37,7 +37,7 @@ async function exec () {
   const githubEvent = require(process.env.GITHUB_EVENT_PATH)
 
   console.log(`githubEvent: ${JSON.stringify(githubEvent, null, 4)}`)
-  const action = new TransitionIssueAction({
+  const action = new Action({
     githubEvent,
     argv,
     config,
