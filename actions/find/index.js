@@ -2,14 +2,14 @@ const fs = require('fs')
 const YAML = require('yaml')
 const cliConfigPath = process.env['HOME'] + '/.jira.d/config.yml'
 const configPath = process.env['HOME'] + '/jira/config.yml'
-const SelectIssueFromAction = require('./SelectIssueFromAction')
+const Action = require('./action')
 
 async function exec() {
   const githubEvent = require(process.env['GITHUB_EVENT_PATH'])
   console.log(`githubEvent: ${JSON.stringify(githubEvent, null, 4)}` )
-  const action = new SelectIssueFromAction({
+  const action = new Action({
     githubEvent,
-    args: require('minimist')(process.argv.slice(2)),
+    args: require('yargs').argv,
     config: YAML.parse(fs.readFileSync(configPath, 'utf8'))
   })
 

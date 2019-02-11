@@ -4,7 +4,7 @@ const fs = require('fs')
 
 const issueIdRegEx = /([a-zA-Z0-9]+-[0-9]+)/g
 
-module.exports = class SelectIssueFrom {
+module.exports = class {
 
   constructor ({ githubEvent, args, config }) {
     this.config = config

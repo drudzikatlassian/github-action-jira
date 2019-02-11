@@ -50,7 +50,7 @@ async function exec () {
       return
     }
 
-    console.log('Failed to create issue.')
+    console.log('Failed to transition issue.')
     process.exit(78)
   } catch (error) {
     console.error(error)
