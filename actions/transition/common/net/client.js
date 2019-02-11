@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 // const moment = require('moment')
 
-export default serviceName => async (state, apiMethod = 'unknown') => {
+module.exports = serviceName => async (state, apiMethod = 'unknown') => {
   // const startTime = moment.now()
 
   const response = await fetch(state.req.url, state.req)

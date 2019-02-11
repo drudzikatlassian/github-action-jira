@@ -80,4 +80,4 @@ class Jira {
   }
 }
 
-export default Jira
+module.exports = Jira
