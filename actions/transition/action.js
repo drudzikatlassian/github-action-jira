@@ -20,7 +20,10 @@ module.exports = class {
     console.log(`process.argv:${JSON.stringify(process.argv, null, 4)}`)
     const { argv } = this
 
-    const { transitions } = await this.Jira.getIssueTransitions(argv.issue)
+    const issueId = argv.issue
+    const transitionId = argv.transition
+
+    const { transitions } = await this.Jira.getIssueTransitions(issueId)
 
     console.log(`transitions: ${JSON.stringify(transitions, null, 4)}`)
 
@@ -29,11 +32,15 @@ module.exports = class {
       console.log(`-t ${t.id} : '${t.name}' transitions to '${t.to.name}'`)
     })
 
-    const transitionResult = await this.Jira.transitionIssue(argv.issue, { transition: {
-      id: argv.transition,
+    await this.Jira.transitionIssue(issueId, { transition: {
+      id: transitionId,
     } })
 
-    console.log(`transitionResult:${JSON.stringify(transitionResult, null, 4)}`)
+    const transitionedIssue = await this.Jira.getIssue(issueId)
+
+    console.log(`Transitioned Issue ${issueId}: ${JSON.stringify(transitionedIssue, null, 4)}`)
+
+    return {}
   }
 
   async transitionTo (issueKey, transitionId) {
