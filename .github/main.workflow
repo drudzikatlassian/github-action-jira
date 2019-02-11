@@ -25,7 +25,7 @@ action "Jira Comment" {
 
 action "Jira Transition" {
   uses = "./actions/transition"
-  needs = ["Jira CLI comment"]
+  needs = ["Jira Comment"]
   args = "-t 21"
 }
 
