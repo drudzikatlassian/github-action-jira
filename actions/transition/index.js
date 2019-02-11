@@ -10,6 +10,7 @@ async function exec () {
   const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
 
   console.log(`config:${JSON.stringify(config, null, 4)}`)
+
   yargs
     .option('issue', {
       alias: 'i',
@@ -37,14 +38,13 @@ async function exec () {
   const githubEvent = require(process.env.GITHUB_EVENT_PATH)
 
   console.log(`githubEvent: ${JSON.stringify(githubEvent, null, 4)}`)
-  const action = new Action({
-    githubEvent,
-    argv,
-    config,
-  })
 
   try {
-    const result = await action.execute()
+    const result = await new Action({
+      githubEvent,
+      argv,
+      config,
+    }).execute()
 
     if (result) {
       return
