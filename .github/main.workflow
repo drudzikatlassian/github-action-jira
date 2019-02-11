@@ -1,6 +1,9 @@
 workflow "Build - Test - Publish" {
   on = "push"
-  resolves = ["Jira Transition"]
+  resolves = [
+    "Jira Login",
+    "Jira Find",
+  ]
 }
 
 action "Jira Login" {
@@ -24,4 +27,10 @@ action "Jira Transition" {
   uses = "./actions/transition"
   needs = ["Jira CLI comment"]
   args = "-t 21"
+}
+
+action "Jira Find" {
+  uses = "./actions/find"
+  needs = ["Jira Transition"]
+  args = "--string=\"INC-3\""
 }
