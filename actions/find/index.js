@@ -19,6 +19,11 @@ async function exec() {
     if (result) {
       console.log(`Detected issueKey: ${result.issue}`)
       console.log(`Saving ${result.issue} to ${cliConfigPath}`)
+      console.log(`Saving ${result.issue} to ${configPath}`)
+      
+      const extendedConfig = Object.assign({}, config, result)
+      fs.writeFileSync(configPath, YAML.stringify(extendedConfig))
+
       return fs.appendFileSync(cliConfigPath, YAML.stringify(result))
     }
 
