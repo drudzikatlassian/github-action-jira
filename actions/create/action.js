@@ -37,10 +37,6 @@ module.exports = class {
     
     console.log('created issue:' + JSON.stringify(issue, null, 4))
     
-    if (result.ok) {
-      return {issue: issue.key}
-    }
-
-    return
+    return {issue: issue.key}
   }
 }
