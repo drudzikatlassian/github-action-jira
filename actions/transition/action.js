@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const Jira = require('./common/net/Jira')
 
 module.exports = class {
@@ -32,7 +33,7 @@ module.exports = class {
 
     const transitionedIssue = await this.Jira.getIssue(issueId)
 
-    console.log(`Transitioned Issue ${issueId}: ${JSON.stringify(transitionedIssue, null, 4)}`)
+    console.log(`Transitioned Issue ${issueId} to : ${_.get(transitionedIssue, 'status.statusCategory.name')}`)
 
     return {}
   }
