@@ -25,9 +25,12 @@ module.exports = class {
     const transitionId = argv.id ||
       _.find(transitions, t => (transitionName === t.name.toLowerCase() ? t.id : false))
 
-    console.log('Possible transition options:')
+    console.log('Possible transitions:')
     transitions.forEach((t) => {
-      console.log(`-id ${t.id} : '${t.name}' transitions to '${t.to.name}'`)
+      console.log(`name: ${t.name} id: ${t.id} transitions issue to '${t.to.name}' status.`)
+      console.log(`Usage:`)
+      console.log(`${t.name}`)
+      console.log(`-id ${t.id}`)
     })
 
     if (transitionId) {
@@ -37,7 +40,7 @@ module.exports = class {
 
       const transitionedIssue = await this.Jira.getIssue(issueId)
 
-      console.log(`Transitioned Issue ${issueId} to : ${_.get(transitionedIssue, 'status.statusCategory.name')}`)
+      console.log(`Transitioned Issue ${issueId} to : ${_.get(transitionedIssue, 'status.statusCategory.name')} state.`)
 
       return {}
     }
