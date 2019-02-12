@@ -23,7 +23,7 @@ module.exports = class {
     const transitionName = argv._.join(' ').toLowerCase()
 
     const transitionId = argv.id ||
-      _.find(transitions, t => transitionName === t.name.toLowerCase())
+      _.find(transitions, t => (transitionName === t.name.toLowerCase() ? t.id : false))
 
     console.log('Possible transition options:')
     transitions.forEach((t) => {
@@ -39,10 +39,8 @@ module.exports = class {
 
       console.log(`Transitioned Issue ${issueId} to : ${_.get(transitionedIssue, 'status.statusCategory.name')}`)
 
-      return
+      return {}
     }
-
-    return {}
   }
 
   findTransitionByName (transitionName, transitions) {
