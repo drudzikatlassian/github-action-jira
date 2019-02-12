@@ -16,13 +16,16 @@ module.exports = class {
   async execute () {
     const { argv } = this
 
-    const issueMeta = await this.Jira.getCreateMeta({
+    const { projects } = await this.Jira.getCreateMeta({
       expand: 'projects.issuetypes.fields',
       projectKeys: argv.project,
       issuetypeNames: argv.issuetype,
     })
 
-    console.log(`issueMeta: ${JSON.stringify(issueMeta, null, 4)}`)
+    const [project] = projects
+    const [issueType] = project.issuetypes
+
+    console.log(`issueMeta: ${JSON.stringify(issueType.fields, null, 4)}`)
 
     const payload = {
       fields: {
