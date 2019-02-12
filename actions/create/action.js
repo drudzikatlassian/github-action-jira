@@ -17,6 +17,7 @@ module.exports = class {
     const { argv } = this
 
     const issueMeta = await this.Jira.getCreateMeta({
+      expand: 'projects.issuetypes.fields',
       projectKeys: argv.project,
       issuetypeNames: argv.issuetype,
     })
