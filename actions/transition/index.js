@@ -44,11 +44,10 @@ function parseArgs () {
       default: config.issue,
       type: 'string',
     })
-    .option('transition', {
-      alias: 't',
-      describe: 'Provide a state to transition issue to',
-      demandOption: !config.transition,
-      default: config.transtion,
+    .option('id', {
+      describe: 'Provide a transition id to apply to an issue',
+      demandOption: !config.transitionId,
+      default: config.transtionId,
       type: 'string',
     })
 

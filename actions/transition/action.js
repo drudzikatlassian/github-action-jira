@@ -18,23 +18,34 @@ module.exports = class {
     const { argv } = this
 
     const issueId = argv.issue
-    const transitionId = argv.transition
-
     const { transitions } = await this.Jira.getIssueTransitions(issueId)
+
+    const transitionName = argv._.join(' ').toLowerCase()
+
+    const transitionId = argv.id ||
+      _.find(transitions, t => transitionName === t.name.toLowerCase())
 
     console.log('Possible transition options:')
     transitions.forEach((t) => {
-      console.log(`-t ${t.id} : '${t.name}' transitions to '${t.to.name}'`)
+      console.log(`-id ${t.id} : '${t.name}' transitions to '${t.to.name}'`)
     })
 
-    await this.Jira.transitionIssue(issueId, { transition: {
-      id: transitionId,
-    } })
+    if (transitionId) {
+      await this.Jira.transitionIssue(issueId, { transition: {
+        id: transitionId,
+      } })
 
-    const transitionedIssue = await this.Jira.getIssue(issueId)
+      const transitionedIssue = await this.Jira.getIssue(issueId)
 
-    console.log(`Transitioned Issue ${issueId} to : ${_.get(transitionedIssue, 'status.statusCategory.name')}`)
+      console.log(`Transitioned Issue ${issueId} to : ${_.get(transitionedIssue, 'status.statusCategory.name')}`)
+
+      return
+    }
 
     return {}
+  }
+
+  findTransitionByName (transitionName, transitions) {
+
   }
 }
