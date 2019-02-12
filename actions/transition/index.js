@@ -46,7 +46,6 @@ function parseArgs () {
     })
     .option('id', {
       describe: 'Provide a transition id to apply to an issue',
-      demandOption: !config.transitionId,
       default: config.transtionId,
       type: 'string',
     })
