@@ -20,16 +20,15 @@ module.exports = class {
     const issueId = argv.issue
     const { transitions } = await this.Jira.getIssueTransitions(issueId)
 
-    const transitionName = argv._.join(' ').toLowerCase()
+    const transitionName = argv._.join(' ')
 
-    let transitionId = argv.id
+    const transitionToApply = _.find(transitions, (t) => {
+      if (t.id === argv.id) return true
+      if (transitionName.toLowerCase() === t.name.toLowerCase()) return true
+    })
 
-    if (transitionName) {
-      const transition = _.find(transitions, t => transitionName === t.name.toLowerCase())
-
-      if (transition) {
-        transitionId = transition.id
-      }
+    if (!transitionToApply) {
+      return console.log('Please specify transition name or transition id.')
     }
 
     console.log('Possible transitions:')
@@ -37,21 +36,16 @@ module.exports = class {
       console.log(`{ id: ${t.id}, name: ${t.name} } transitions issue to '${t.to.name}' status.`)
     })
 
-    if (transitionId) {
-      await this.Jira.transitionIssue(issueId, { transition: {
-        id: transitionId,
-      } })
+    await this.Jira.transitionIssue(issueId, { transition: {
+      id: transitionToApply.id,
+    } })
 
-      const transitionedIssue = await this.Jira.getIssue(issueId)
+    const transitionedIssue = await this.Jira.getIssue(issueId)
 
-      console.log(`Transitioned issue ${issueId} to : ${_.get(transitionedIssue, 'status.name')} state.`)
-      console.log(`Link to issue: ${this.config.baseUrl}/browse/${issueId}`)
+    console.log(`transitionedIssue:${JSON.stringify(transitionedIssue, null, 4)}`)
+    console.log(`Transitioned issue ${issueId} to : ${_.get(transitionedIssue, 'status.name')} state.`)
+    console.log(`Link to issue: ${this.config.baseUrl}/browse/${issueId}`)
 
-      return {}
-    }
-  }
-
-  findTransitionByName (transitionName, transitions) {
-
+    return {}
   }
 }
