@@ -13,10 +13,10 @@ class Jira {
 
   async addComment (issueId, data) {
     return this.fetch('addComment', {
-      pathname:  `/rest/api/2/issue/${issueId}/comment`
+      pathname: `/rest/api/2/issue/${issueId}/comment`,
     }, {
       method: 'POST',
-      body: data
+      body: data,
     })
   }
 
@@ -106,6 +106,8 @@ class Jira {
         originError: error,
         source: 'jira',
       }
+
+      delete state.req.headers
 
       throw Object.assign(
         new Error('Jira API error'),

@@ -98,6 +98,8 @@ class Jira {
         source: 'jira',
       }
 
+      delete state.req.headers
+
       throw Object.assign(
         new Error('Jira API error'),
         state,
