@@ -39,6 +39,7 @@ async function exec () {
 function parseArgs () {
   yargs
     .middleware((argv) => {
+      _.templateSettings.interpolate = /{{([\s\S]+?)}}/g
       const compiled = _.template(argv.comment)
 
       argv.comment = compiled({ event: githubEvent })
