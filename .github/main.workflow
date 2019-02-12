@@ -32,5 +32,5 @@ action "Jira Transition" {
 action "Jira Find" {
   uses = "./actions/find"
   needs = ["Jira Transition"]
-  args = "--string=\"INC-3\""
+  args = "--string=\"INC-4\" "
 }
