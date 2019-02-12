@@ -11,6 +11,10 @@ class Jira {
     this.email = email
   }
 
+  async getCreateMeta (query) {
+    return this.fetch('getCreateMeta', { pathname: '/rest/api/2/issue/createmeta', query })
+  }
+
   async createIssue (body) {
     return this.fetch('createIssue',
       { pathname: '/rest/api/2/issue' },
