@@ -23,7 +23,10 @@ module.exports = class {
       issuetypeNames: argv.issuetype,
     })
 
-    console.log(`projects: ${JSON.stringify(projects, null, 4)}`)
+    if (projects.length === 0) {
+      console.error(`project ${argv.project} not found`)
+      return
+    }
 
     const [project] = projects
     const [issueType] = project.issuetypes
