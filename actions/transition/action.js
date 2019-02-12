@@ -23,14 +23,14 @@ module.exports = class {
     const transitionName = argv._.join(' ').toLowerCase()
 
     const transitionId = argv.id ||
-      _.find(transitions, t => (transitionName === t.name.toLowerCase() ? t.id : false))
+      _.find(transitions, t => (transitionName === t.name.toLowerCase())).id
 
     console.log('Possible transitions:')
     transitions.forEach((t) => {
       console.log(`name: ${t.name} id: ${t.id} transitions issue to '${t.to.name}' status.`)
       console.log(`Usage:`)
-      console.log(`${t.name}`)
-      console.log(`-id ${t.id}`)
+      console.log(`\t ${t.name}`)
+      console.log(`\t -id ${t.id}`)
     })
 
     if (transitionId) {
