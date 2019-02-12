@@ -18,6 +18,7 @@ module.exports = class {
 
     const issueMeta = await this.Jira.getCreateMeta({
       projectKeys: argv.project,
+      issuetypeNames: argv.issuetype,
     })
 
     console.log(`issueMeta: ${JSON.stringify(issueMeta, null, 4)}`)
