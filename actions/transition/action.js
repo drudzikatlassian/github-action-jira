@@ -41,6 +41,7 @@ module.exports = class {
       const transitionedIssue = await this.Jira.getIssue(issueId)
 
       console.log(`Transitioned Issue ${issueId} to : ${_.get(transitionedIssue, 'status.statusCategory.name')} state.`)
+      console.log(`Link to issue: ${this.config.baseUrl}/browse/${issueId}`)
 
       return {}
     }
