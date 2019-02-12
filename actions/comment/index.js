@@ -1,6 +1,7 @@
 const fs = require('fs')
 const YAML = require('yaml')
 const yargs = require('yargs')
+const _ = require('lodash')
 
 const cliConfigPath = `${process.env.HOME}/.jira.d/config.yml`
 const configPath = `${process.env.HOME}/jira/config.yml`
@@ -36,6 +37,12 @@ async function exec () {
 }
 
 function parseArgs () {
+  yargs
+    .middleware((argv) => {
+      const compiled = _.template(argv.comment)
+
+      argv.comment = compiled({ event: githubEvent })
+    })
   yargs
     .option('issue', {
       alias: 'i',

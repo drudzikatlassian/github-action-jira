@@ -17,6 +17,8 @@ module.exports = class {
     const issueId = this.argv.issue
     const { comment } = this.argv
 
+    console.log(`Adding comment:${comment}`)
+
     await this.Jira.addComment(issueId, { body: comment })
 
     return {}
