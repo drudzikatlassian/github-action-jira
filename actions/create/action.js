@@ -23,6 +23,8 @@ module.exports = class {
       issuetypeNames: argv.issuetype,
     })
 
+    console.log(`projects: ${JSON.stringify(projects, null, 4)}`)
+
     const [project] = projects
     const [issueType] = project.issuetypes
 
