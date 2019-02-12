@@ -31,6 +31,8 @@ module.exports = class {
       return console.log('Please specify transition name or transition id.')
     }
 
+    console.log(`Selected transition:${JSON.stringify(transitionToApply, null, 4)}`)
+
     console.log('Possible transitions:')
     transitions.forEach((t) => {
       console.log(`{ id: ${t.id}, name: ${t.name} } transitions issue to '${t.to.name}' status.`)
