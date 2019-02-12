@@ -34,10 +34,7 @@ module.exports = class {
 
     console.log('Possible transitions:')
     transitions.forEach((t) => {
-      console.log(`name: ${t.name} id: ${t.id} transitions issue to '${t.to.name}' status.`)
-      console.log(`Usage:`)
-      console.log(`\t ${t.name}`)
-      console.log(`\t -id ${t.id}`)
+      console.log(`{ id: ${t.id}, name: ${t.name} } transitions issue to '${t.to.name}' status.`)
     })
 
     if (transitionId) {
@@ -47,7 +44,7 @@ module.exports = class {
 
       const transitionedIssue = await this.Jira.getIssue(issueId)
 
-      console.log(`Transitioned Issue ${issueId} to : ${_.get(transitionedIssue, 'status.statusCategory.name')} state.`)
+      console.log(`Transitioned issue ${issueId} to : ${_.get(transitionedIssue, 'status.name')} state.`)
       console.log(`Link to issue: ${this.config.baseUrl}/browse/${issueId}`)
 
       return {}
