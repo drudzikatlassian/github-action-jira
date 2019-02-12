@@ -28,13 +28,6 @@ module.exports = class {
 
     console.log(`issueMeta: ${JSON.stringify(issueType.fields, null, 4)}`)
 
-    const fieldsMap = issueType.fields.map(field => ({
-      key: field.key,
-      customKey: field.name.replace(/ /g, ''),
-    }))
-
-    console.log(`fieldsMap:${JSON.stringify(fieldsMap, null, 4)}`)
-
     const payload = {
       fields: {
         project: {
