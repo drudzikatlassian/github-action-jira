@@ -11,7 +11,7 @@ Transition Jira issue
 
 ## Reads fields from config file at $HOME/jira/config.yml
 - `issue`
-- `transition`
+- `transitionId`
 
 ## Writes fields to config file at $HOME/jira/config.yml
 - None
