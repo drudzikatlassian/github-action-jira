@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=testing jest"
+    "test": "NODE_ENV=testing jest __tests__"
   },
   "author": "",
   "license": "ISC",
