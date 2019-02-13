@@ -22,8 +22,7 @@ module.exports = class {
     const compiled = _.template(rawComment)
     const interpolatedComment = compiled({ event: this.githubEvent })
 
-    console.log(`Adding comment:${interpolatedComment}`)
-
+    console.log(`Adding comment to ${issueId}: ${interpolatedComment}`)
     await this.Jira.addComment(issueId, { body: interpolatedComment })
 
     return {}
