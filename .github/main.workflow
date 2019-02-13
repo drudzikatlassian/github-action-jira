@@ -20,7 +20,7 @@ action "Jira Create" {
 action "Jira Comment" {
   uses = "./actions/comment"
   needs = ["Jira Create"]
-  args = "\"Everything is awesome in $GITHUB_REPOSITORY in branch: {{ event.ref; console.log('ololo') }}\""
+  args = "\"Everything is awesome in $GITHUB_REPOSITORY in branch: {{ event.ref }}\""
 }
 
 action "Jira Transition" {
