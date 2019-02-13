@@ -62,7 +62,7 @@ module.exports = class {
     _.templateSettings.interpolate = /{{([\s\S]+?)}}/g
     const summaryTmpl = _.template(this.argv.summary)
     const descriptionTmpl = _.template(this.argv.description)
-    this.argv.summary = summaryTmpl(this.githubEvent)
-    this.argv.description = descriptionTmpl(this.githubEvent)
+    this.argv.summary = summaryTmpl({ event: this.githubEvent })
+    this.argv.description = descriptionTmpl({ event: this.githubEvent })
   }
 }
