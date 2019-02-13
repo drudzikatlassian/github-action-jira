@@ -1,5 +1,12 @@
-# Login
+# Jira Login
 Used to store credentials for later use in CLI action
+
+## Usage
+
+TBD
+
+----
+## Action Spec:
 
 ### Enviroment variables
 - `JIRA_BASE_URL` - URL of Jira instance. Example: `https://<yourdomain>.atlassian.net`

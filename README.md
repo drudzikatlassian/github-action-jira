@@ -2,9 +2,9 @@
 The GitHub Actions for [Jira](https://www.atlassian.com/software/jira) to create and edit Jira issues
 
 ## Actions
- - `Jira Login` - Stores credentials from environment variables
- - `Jira CLI` - Wrapped go-jira CLI
- - `Jira Create` - Create new Jira issue
- - `Jira Transition` - Transition an issue
- - `Jira Find` - Find an issue to operate
- - `Jira Comment` - Add a comment to an issue
+ - [`Login`](./actions/login) - Stores credentials from environment variables
+ - [`CLI`](./actions/cli) - Wrapped [go-jira](https://github.com/Netflix-Skunkworks/go-jira) CLI
+ - [`Create`](./actions/create) - Create new Jira issue
+ - [`Transition`](./actions/transition) - Transition an issue
+ - [`Find`](./actions/find) - Find an issue to operate
+ - [`Comment`](./actions/comment) - Add a comment to an issue

@@ -1,5 +1,12 @@
-# Select Issue Key From
+# Jira Find
 Extract issue key from string
+
+## Usage
+
+TBD
+
+----
+## Action Spec:
 
 ### Environment variables
 - None

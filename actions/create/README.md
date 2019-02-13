@@ -1,6 +1,13 @@
 # Jira Create
 Create new issue
 
+## Usage
+
+TBD
+
+----
+## Action Spec:
+
 ### Environment variables
 - None
 
