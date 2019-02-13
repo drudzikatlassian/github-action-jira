@@ -28,13 +28,14 @@ module.exports = class {
 
     if (projects.length === 0) {
       console.error(`project ${argv.project} not found`)
+
       return
     }
 
-    const [project] = projects
-    const [issueType] = project.issuetypes
+    // const [project] = projects
+    // const [issueType] = project.issuetypes
 
-    console.log(`issueMeta: ${JSON.stringify(issueType.fields, null, 4)}`)
+    // console.log(`issueMeta: ${JSON.stringify(issueType.fields, null, 4)}`)
 
     const payload = {
       fields: {
@@ -62,6 +63,7 @@ module.exports = class {
     _.templateSettings.interpolate = /{{([\s\S]+?)}}/g
     const summaryTmpl = _.template(this.argv.summary)
     const descriptionTmpl = _.template(this.argv.description)
+
     this.argv.summary = summaryTmpl({ event: this.githubEvent })
     this.argv.description = descriptionTmpl({ event: this.githubEvent })
   }
