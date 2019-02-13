@@ -38,6 +38,5 @@ action "Jira Find" {
 
 action "Test 'Jira Create'" {
   uses = "./actions/create"
-  runs = "npm"
-  args = "test"
+  runs = "/test.sh"
 }
