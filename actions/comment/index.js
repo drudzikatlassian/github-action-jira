@@ -44,13 +44,6 @@ function parseArgs () {
       default: config.issue,
       type: 'string',
     })
-    .option('comment', {
-      alias: 'c',
-      describe: 'Provide a comment to add to issue',
-      demandOption: !config.comment,
-      default: config.comment,
-      type: 'string',
-    })
 
   yargs
     .parserConfiguration({

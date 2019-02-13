@@ -28,17 +28,22 @@ module.exports = class {
     })
 
     if (!transitionToApply) {
-      return console.log('Please specify transition name or transition id.')
+      console.log('Please specify transition name or transition id.')
+      console.log('Possible transitions:')
+      transitions.forEach((t) => {
+        console.log(`{ id: ${t.id}, name: ${t.name} } transitions issue to '${t.to.name}' status.`)
+      })
+
+      return
     }
 
-    console.log('Possible transitions:')
-    transitions.forEach((t) => {
-      console.log(`{ id: ${t.id}, name: ${t.name} } transitions issue to '${t.to.name}' status.`)
-    })
+    console.log(`Selected transition:${JSON.stringify(transitionToApply, null, 4)}`)
 
-    await this.Jira.transitionIssue(issueId, { transition: {
-      id: transitionToApply.id,
-    } })
+    await this.Jira.transitionIssue(issueId, {
+      transition: {
+        id: transitionToApply.id,
+      },
+    })
 
     const transitionedIssue = await this.Jira.getIssue(issueId)
 
