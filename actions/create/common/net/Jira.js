@@ -107,8 +107,8 @@ class Jira {
       throw Object.assign(
         new Error('Jira API error'),
         state,
-        fields
-      )
+        fields,
+        { jiraError: state.res.body.errors })
     }
 
     return state.res.body
