@@ -41,8 +41,10 @@ function parseArgs () {
     .middleware((argv) => {
       _.templateSettings.interpolate = /{{([\s\S]+?)}}/g
       const compiled = _.template(argv.comment)
+      const interpolatedComment = compiled({ event: githubEvent })
 
-      argv.comment = compiled({ event: githubEvent })
+      console.log(`interpolatedComment:${interpolatedComment}`)
+      argv.comment = interpolatedComment
     })
   yargs
     .option('issue', {
