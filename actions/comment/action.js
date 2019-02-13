@@ -18,6 +18,8 @@ module.exports = class {
     const issueId = this.argv.issue
     const rawComment = this.argv._.join(' ')
 
+    console.log(`this.argv._:${JSON.stringify(this.argv._, null, 4)}`)
+
     _.templateSettings.interpolate = /{{([\s\S]+?)}}/g
     const compiled = _.template(rawComment)
     const interpolatedComment = compiled({ event: this.githubEvent })
