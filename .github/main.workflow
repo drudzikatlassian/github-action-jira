@@ -3,6 +3,7 @@ workflow "Build - Test - Publish" {
   resolves = [
     "Jira Login",
     "Jira Find",
+    "Test 'Jira Create'",
   ]
 }
 
@@ -33,4 +34,10 @@ action "Jira Find" {
   uses = "./actions/find"
   needs = ["Jira Transition"]
   args = "--string=\"INC-4\" "
+}
+
+action "Test 'Jira Create'" {
+  uses = "./actions/create"
+  runs = "npm"
+  args = "test"
 }
