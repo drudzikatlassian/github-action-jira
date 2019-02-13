@@ -9,11 +9,13 @@ LABEL "com.github.actions.description"="Create a new Jira issue"
 LABEL "com.github.actions.icon"="check-square"
 LABEL "com.github.actions.color"="blue"
 
+RUN mkdir /app
+WORKDIR /app
 
-COPY package*.json ./
+COPY package*.json .
 RUN npm i
 COPY . .
-RUN chmod +x /entrypoint.sh
-RUN chmod +x /test.sh
+RUN chmod +x entrypoint.sh
+RUN chmod +x test.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["entrypoint.sh"]
