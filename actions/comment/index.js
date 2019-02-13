@@ -1,7 +1,6 @@
 const fs = require('fs')
 const YAML = require('yaml')
 const yargs = require('yargs')
-const _ = require('lodash')
 
 const cliConfigPath = `${process.env.HOME}/.jira.d/config.yml`
 const configPath = `${process.env.HOME}/jira/config.yml`
@@ -38,27 +37,11 @@ async function exec () {
 
 function parseArgs () {
   yargs
-    .middleware((argv) => {
-      _.templateSettings.interpolate = /{{([\s\S]+?)}}/g
-      const compiled = _.template(argv.comment)
-      const interpolatedComment = compiled({ event: githubEvent })
-
-      console.log(`interpolatedComment:${interpolatedComment}`)
-      argv.comment = interpolatedComment
-    })
-  yargs
     .option('issue', {
       alias: 'i',
       describe: 'Provide an issue key to add a comment for',
       demandOption: !config.issue,
       default: config.issue,
-      type: 'string',
-    })
-    .option('comment', {
-      alias: 'c',
-      describe: 'Provide a comment to add to issue',
-      demandOption: !config.comment,
-      default: config.comment,
       type: 'string',
     })
 
