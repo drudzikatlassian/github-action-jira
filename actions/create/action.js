@@ -23,6 +23,11 @@ module.exports = class {
       issuetypeNames: argv.issuetype,
     })
 
+    if (projects.length === 0) {
+      console.error(`project ${argv.project} not found`)
+      return
+    }
+
     const [project] = projects
     const [issueType] = project.issuetypes
 
