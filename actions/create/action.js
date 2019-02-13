@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const Jira = require('./common/net/Jira')
 
 module.exports = class {
@@ -14,6 +15,8 @@ module.exports = class {
   }
 
   async execute () {
+    this.preprocessArgs()
+
     const { argv } = this
 
     // map custom fields
@@ -53,5 +56,13 @@ module.exports = class {
     const issue = await this.Jira.createIssue(payload)
 
     return { issue: issue.key }
+  }
+
+  preprocessArgs () {
+    _.templateSettings.interpolate = /{{([\s\S]+?)}}/g
+    const summaryTmpl = _.template(this.argv.summary)
+    const descriptionTmpl = _.template(this.argv.description)
+    this.argv.summary = summaryTmpl(this.githubEvent)
+    this.argv.description = descriptionTmpl(this.githubEvent)
   }
 }
