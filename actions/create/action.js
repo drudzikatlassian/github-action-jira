@@ -89,7 +89,7 @@ module.exports = class {
   }
 
   transformFields (fields) {
-    Object.keys(fields).map(fieldKey => ({
+    return Object.keys(fields).map(fieldKey => ({
       key: fieldKey,
       value: fields[fieldKey],
     }))
