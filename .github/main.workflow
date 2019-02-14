@@ -7,8 +7,14 @@ workflow "Build - Test - Publish" {
   ]
 }
 
+action "Test 'Jira Create'" {
+  uses = "./actions/create"
+  runs = "/test.sh"
+}
+
 action "Jira Login" {
   uses = "./actions/login"
+  needs = ["Test 'Jira Create'"]
   secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
 }
 
@@ -34,9 +40,4 @@ action "Jira Find" {
   uses = "./actions/find"
   needs = ["Jira Transition"]
   args = "--string=\"INC-4\" "
-}
-
-action "Test 'Jira Create'" {
-  uses = "./actions/create"
-  runs = "/test.sh"
 }
