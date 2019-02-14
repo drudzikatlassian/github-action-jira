@@ -38,9 +38,9 @@ module.exports = class {
 
   getExtractString () {
     if (this.argv.event) {
-      console.log(`Extracting from github event file, path:'${this.args.event}'`)
+      console.log(`Extracting from github event file, path:'${this.argv.event}'`)
 
-      return _.get(this.githubEvent, this.args.event)
+      return _.get(this.githubEvent, this.argv.event)
     }
 
     if (this.argv.string) {
