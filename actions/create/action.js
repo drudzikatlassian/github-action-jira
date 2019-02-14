@@ -1,6 +1,8 @@
 const _ = require('lodash')
 const Jira = require('./common/net/Jira')
 
+const REQUIRED_SYSTEM_FIELDS = ['summary', 'issuetype', 'project']
+
 module.exports = class {
   constructor ({ githubEvent, argv, config }) {
     this.Jira = new Jira({
@@ -18,45 +20,81 @@ module.exports = class {
     this.preprocessArgs()
 
     const { argv } = this
+    const projectKey = argv.project
+    const issuetypeName = argv.issuetype
 
     // map custom fields
     const { projects } = await this.Jira.getCreateMeta({
       expand: 'projects.issuetypes.fields',
-      projectKeys: argv.project,
-      issuetypeNames: argv.issuetype,
+      projectKeys: projectKey,
+      issuetypeNames: issuetypeName,
     })
 
     if (projects.length === 0) {
-      console.error(`project ${argv.project} not found`)
+      console.error(`project '${projectKey}' not found`)
 
       return
     }
 
-    // const [project] = projects
-    // const [issueType] = project.issuetypes
+    const [project] = projects
 
-    // console.log(`issueMeta: ${JSON.stringify(issueType.fields, null, 4)}`)
+    if (project.issuetypes.length === 0) {
+      console.error(`issuetype '${issuetypeName}' not found`)
 
-    const payload = {
-      fields: {
-        project: {
-          key: argv.project,
-        },
-        issuetype: {
-          name: argv.issuetype,
-        },
-        summary: argv.summary,
-        ...argv.fields,
-      },
+      return
     }
+
+    let providedFields = [{
+      key: 'project',
+      value: {
+        key: projectKey,
+      },
+    }, {
+      key: 'issuetype',
+      value: {
+        name: issuetypeName,
+      },
+    }, {
+      key: 'summary',
+      value: argv.summary,
+    }]
 
     if (argv.description) {
-      payload.fields.description = argv.description
+      providedFields.push({
+        key: 'description',
+        value: argv.description,
+      })
     }
+
+    if (argv.fields) {
+      providedFields = [...providedFields, ...this.transformFields(argv.fields)]
+    }
+
+    // const [issueType] = project.issuetypes
+
+    // const fields = Object.values(issueType.fields)
+
+    // const requiredFieldsWithNoDefaults =
+    //   fields.filter(field => field.required && !field.hasDefaultValue && !REQUIRED_SYSTEM_FIELDS.includes(field.key))
+
+    const payload = providedFields.reduce((acc, field) => {
+      acc.fields[field.key] = field.value
+
+      return acc
+    }, {
+      fields: {},
+    })
 
     const issue = await this.Jira.createIssue(payload)
 
     return { issue: issue.key }
+  }
+
+  transformFields (fields) {
+    Object.keys(fields).map(fieldKey => ({
+      key: fieldKey,
+      value: fields[fieldKey],
+    }))
   }
 
   preprocessArgs () {
