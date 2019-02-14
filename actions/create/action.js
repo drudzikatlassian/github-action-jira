@@ -1,8 +1,6 @@
 const _ = require('lodash')
 const Jira = require('./common/net/Jira')
 
-const REQUIRED_SYSTEM_FIELDS = ['summary', 'issuetype', 'project']
-
 module.exports = class {
   constructor ({ githubEvent, argv, config }) {
     this.Jira = new Jira({
