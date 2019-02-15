@@ -17,7 +17,7 @@ module.exports = class {
   }
 
   async execute () {
-    const extractString = this.getExtractString()
+    const extractString = this.preprocessString(this.argv._.join(' '))
 
     const match = extractString.match(issueIdRegEx)
 
@@ -36,17 +36,10 @@ module.exports = class {
     }
   }
 
-  getExtractString () {
-    if (this.argv.event) {
-      console.log(`Extracting from github event file, path:'${this.argv.event}'`)
+  preprocessString (str) {
+    _.templateSettings.interpolate = /{{([\s\S]+?)}}/g
+    const tmpl = _.template(str)
 
-      return _.get(this.githubEvent, this.argv.event)
-    }
-
-    if (this.argv.string) {
-      return this.argv.string
-    }
-
-    return ''
+    return tmpl({ event: this.githubEvent })
   }
 }
