@@ -14,5 +14,6 @@ COPY package*.json ./
 RUN npm i
 COPY . .
 RUN chmod +x /entrypoint.sh
+RUN chmod +x /test.sh
 
 ENTRYPOINT ["/entrypoint.sh"]

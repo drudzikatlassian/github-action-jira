@@ -3,11 +3,18 @@ workflow "Build - Test - Publish" {
   resolves = [
     "Jira Login",
     "Jira Find",
+    "Test 'Jira Create'",
   ]
+}
+
+action "Test 'Jira Create'" {
+  uses = "./actions/create"
+  runs = "/test.sh"
 }
 
 action "Jira Login" {
   uses = "./actions/login"
+  needs = ["Test 'Jira Create'"]
   secrets = ["JIRA_API_TOKEN", "JIRA_BASE_URL", "JIRA_USER_EMAIL"]
 }
 

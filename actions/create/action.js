@@ -18,50 +18,81 @@ module.exports = class {
     this.preprocessArgs()
 
     const { argv } = this
+    const projectKey = argv.project
+    const issuetypeName = argv.issuetype
 
     // map custom fields
     const { projects } = await this.Jira.getCreateMeta({
       expand: 'projects.issuetypes.fields',
-      projectKeys: argv.project,
-      issuetypeNames: argv.issuetype,
+      projectKeys: projectKey,
+      issuetypeNames: issuetypeName,
     })
 
     if (projects.length === 0) {
-      console.error(`project ${argv.project} not found`)
+      console.error(`project '${projectKey}' not found`)
+
       return
     }
 
     const [project] = projects
-    const [issueType] = project.issuetypes
 
-    console.log(`issueMeta: ${JSON.stringify(issueType.fields, null, 4)}`)
+    if (project.issuetypes.length === 0) {
+      console.error(`issuetype '${issuetypeName}' not found`)
 
-    const payload = {
-      fields: {
-        project: {
-          key: argv.project,
-        },
-        issuetype: {
-          name: argv.issuetype,
-        },
-        summary: argv.summary,
-        ...argv.fields,
-      },
+      return
     }
+
+    let providedFields = [{
+      key: 'project',
+      value: {
+        key: projectKey,
+      },
+    }, {
+      key: 'issuetype',
+      value: {
+        name: issuetypeName,
+      },
+    }, {
+      key: 'summary',
+      value: argv.summary,
+    }]
 
     if (argv.description) {
-      payload.fields.description = argv.description
+      providedFields.push({
+        key: 'description',
+        value: argv.description,
+      })
     }
+
+    if (argv.fields) {
+      providedFields = [...providedFields, ...this.transformFields(argv.fields)]
+    }
+
+    const payload = providedFields.reduce((acc, field) => {
+      acc.fields[field.key] = field.value
+
+      return acc
+    }, {
+      fields: {},
+    })
 
     const issue = await this.Jira.createIssue(payload)
 
     return { issue: issue.key }
   }
 
+  transformFields (fields) {
+    return Object.keys(fields).map(fieldKey => ({
+      key: fieldKey,
+      value: fields[fieldKey],
+    }))
+  }
+
   preprocessArgs () {
     _.templateSettings.interpolate = /{{([\s\S]+?)}}/g
     const summaryTmpl = _.template(this.argv.summary)
     const descriptionTmpl = _.template(this.argv.description)
+
     this.argv.summary = summaryTmpl({ event: this.githubEvent })
     this.argv.description = descriptionTmpl({ event: this.githubEvent })
   }
