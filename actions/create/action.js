@@ -68,13 +68,6 @@ module.exports = class {
       providedFields = [...providedFields, ...this.transformFields(argv.fields)]
     }
 
-    // const [issueType] = project.issuetypes
-
-    // const fields = Object.values(issueType.fields)
-
-    // const requiredFieldsWithNoDefaults =
-    //   fields.filter(field => field.required && !field.hasDefaultValue && !REQUIRED_SYSTEM_FIELDS.includes(field.key))
-
     const payload = providedFields.reduce((acc, field) => {
       acc.fields[field.key] = field.value
 
