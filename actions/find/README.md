@@ -12,12 +12,10 @@ TBD
 - None
 
 ### Arguments
-- `--event=<jsonpath>` - Specify a `jsonpath` of the GitHub event to get a string to extract an issue key from
-- `--string=<text>` - Use specified string to extract issue key from
+- None
 
 ### Reads fields from config file at $HOME/jira/config.yml
-- `event`
-- `string`
+- None
 
 ### Writes fields to config file at $HOME/jira/config.yml
 - `issue` - a key of a found issue
