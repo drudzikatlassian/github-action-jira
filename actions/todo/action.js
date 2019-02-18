@@ -2,7 +2,7 @@ const _ = require('lodash')
 const Jira = require('./common/net/Jira')
 
 module.exports = class {
-  constructor ({ githubEvent, argv, config }) {
+  constructor ({ githubEvent, argv, config, githubToken }) {
     this.Jira = new Jira({
       baseUrl: config.baseUrl,
       token: config.token,
@@ -12,6 +12,7 @@ module.exports = class {
     this.config = config
     this.argv = argv
     this.githubEvent = githubEvent
+    this.githubToken = githubToken
   }
 
   async execute () {
@@ -110,23 +111,21 @@ module.exports = class {
 
   async findTodoInCommits(repo, commits) {
     console.log(commits)
-    return Promise.all(commits.map((c) => {
+    return Promise.all(commits.map(async (c) => {
       const req = {
         headers: {
-          Authorization: `token ${githubToken}`,
+          Authorization: `token ${this.githubToken}`,
           Accept: 'application/vnd.github.v3.diff',
         }
       }
       const url = `https://api.github.com/repos/${repo.full_name}/commits/${c.id}`
-      // TODO: cleanup here
+      // TODO: cleanup here please
       console.log(url)
-      return fetch(url, req).then((resp) => {
-        return resp.text()
-      }).then((res) => {
-        // TODO: refactor
-        const rx = /\+\s*\/\/ TODO: (.*)$/gm
-        return (res.match(rx) || []).map(m => m.split('// TODO: ')[1])
-      })
+      const resp = await fetch(url, req);
+      const res = await resp.text();
+      // TODO: refactor this
+      const rx = /\+\s*\/\/ TODO: (.*)$/gm;
+      return (res.match(rx) || []).map(m => m.split('// TODO: ')[1]);
     }))
   }
 }

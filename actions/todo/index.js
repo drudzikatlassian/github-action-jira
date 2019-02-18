@@ -19,6 +19,7 @@ async function exec () {
       githubEvent,
       argv: parseArgs(),
       config,
+      githubToken,
     }).execute()
 
     if (result) {
