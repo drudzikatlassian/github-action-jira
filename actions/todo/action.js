@@ -91,7 +91,7 @@ module.exports = class {
       return (await this.Jira.createIssue(payload)).key
     })
 
-    return { issues: issues }
+    return { issues: Promise.all(issues) }
   }
 
   transformFields (fields) {
@@ -118,11 +118,11 @@ module.exports = class {
         }
       }
       const url = `https://api.github.com/repos/${repo.full_name}/commits/${c.id}`
-      // TODO: cleanup here please
+      // TODO: cleanup here
       console.log(url)
       const resp = await fetch(url, req);
       const res = await resp.text();
-      // TODO: refactor this
+      // TODO: refactor this or die
       const rx = /\+\s*\/\/ TODO: (.*)$/gm;
       return (res.match(rx) || []).map(m => m.split('// TODO: ')[1]);
     }))
