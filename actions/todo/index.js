@@ -100,7 +100,7 @@ async function findTodoInCommits(repo, commits) {
       return resp.text()
     }).then((res) => {
       const rx = /\+\s*\/\/ TODO: (.*)$/gm
-      return res.match(rx)
+      return res.split(rx).filter(Boolean)
     })
   }))
 }
