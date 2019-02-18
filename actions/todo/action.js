@@ -53,9 +53,7 @@ module.exports = class {
       return
     }
 
-    const issues = []
-
-    for (summary in summaries) {
+    const issues = summaries.map(summary => {
       let providedFields = [{
         key: 'project',
         value: {
@@ -90,8 +88,8 @@ module.exports = class {
         fields: {},
       })
 
-      issues.push(await this.Jira.createIssue(payload).key)
-    }
+      return await this.Jira.createIssue(payload).key
+    })
 
     return { issues: issues }
   }
