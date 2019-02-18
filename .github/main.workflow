@@ -21,7 +21,7 @@ action "Jira Login" {
 action "Jira Create" {
   uses = "./actions/create"
   needs = ["Jira Login"]
-  args = "--project=GA --issuetype=Task --summary=\"Build completed for $GITHUB_REPOSITORY\" --description=\"This is description\" "
+  args = "--project=GA --issuetype=Build --summary=\"Build completed for $GITHUB_REPOSITORY\" --description=\"This is description\" "
 }
 
 action "Jira Comment" {
