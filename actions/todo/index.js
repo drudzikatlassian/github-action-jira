@@ -14,7 +14,7 @@ const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
 
 async function exec () {
   if (githubEvent.commits && githubEvent.commits.length > 0) {
-    console.log(await findTodoInCommits(githubEvent.commits))
+    console.log(await findTodoInCommits(githubEvent.repository, githubEvent.commits))
   }
 
   try {
@@ -83,7 +83,7 @@ function parseArgs () {
   return yargs.argv
 }
 
-async function findTodoInCommits(commits) {
+async function findTodoInCommits(repo, commits) {
   console.log(commits)
   return Promise.all(commits.map((c) => {
     const req = {
@@ -92,7 +92,9 @@ async function findTodoInCommits(commits) {
         Accept: 'application/vnd.github.v3.diff',
       }
     }
-    return fetch(c.url, req).then((resp) => {
+    const url = `https://api.github.com/repos/${repo.full_name}/commits/${commit.id}`
+    console.log(url)
+    return fetch(url, req).then((resp) => {
       return resp.text()
     })
   }))
