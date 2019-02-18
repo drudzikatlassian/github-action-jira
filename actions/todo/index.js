@@ -94,12 +94,12 @@ async function findTodoInCommits(repo, commits) {
       }
     }
     const url = `https://api.github.com/repos/${repo.full_name}/commits/${c.id}`
-    // TODO: cleanup here
+    // TODO: cleanup here please
     console.log(url)
     return fetch(url, req).then((resp) => {
       return resp.text()
     }).then((res) => {
-      // TODO: refactor
+      // TODO: refactor here
       const rx = /\+\s*\/\/ TODO: (.*)$/gm
       return res.match(rx).map(m => m.split('// TODO: ')[1])
     })
