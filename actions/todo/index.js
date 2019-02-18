@@ -1,10 +1,12 @@
 const fs = require('fs')
 const YAML = require('yaml')
 const yargs = require('yargs')
+const fetch = require('node-fetch')
 
 const cliConfigPath = `${process.env.HOME}/.jira.d/config.yml`
 const configPath = `${process.env.HOME}/jira/config.yml`
 const Action = require('./action')
+const githubToken = process.env.GITHUB_TOKEN
 
 // eslint-disable-next-line import/no-dynamic-require
 const githubEvent = require(process.env.GITHUB_EVENT_PATH)
@@ -12,7 +14,7 @@ const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
 
 async function exec () {
   if (githubEvent.commits && githubEvent.commits.length > 0) {
-    findTodoInCommits(githubEvent.commits)
+    console.log(await findTodoInCommits(githubEvent.commits))
   }
 
   try {
@@ -81,12 +83,19 @@ function parseArgs () {
   return yargs.argv
 }
 
-function findTodoInCommits(commits) {
+async function findTodoInCommits(commits) {
   console.log(commits)
-  for (commit in commits) {
-    console.log(commit.sha)
-    console.log(commit.url)
-  }
+  return Promise.all(commits.map((c) => {
+    const req = {
+      headers: {
+        Authorization: `token ${githubToken}`,
+        Accept: 'application/vnd.github.v3.diff',
+      }
+    }
+    return fetch(c.url, req).then((resp) => {
+      return resp.text()
+    })
+  }))
 }
 
 exec()
