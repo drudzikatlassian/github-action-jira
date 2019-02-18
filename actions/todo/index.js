@@ -92,7 +92,7 @@ async function findTodoInCommits(repo, commits) {
         Accept: 'application/vnd.github.v3.diff',
       }
     }
-    const url = `https://api.github.com/repos/${repo.full_name}/commits/${commit.id}`
+    const url = `https://api.github.com/repos/${repo.full_name}/commits/${c.id}`
     console.log(url)
     return fetch(url, req).then((resp) => {
       return resp.text()
