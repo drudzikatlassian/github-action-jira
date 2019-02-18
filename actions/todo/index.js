@@ -2,6 +2,7 @@ const fs = require('fs')
 const YAML = require('yaml')
 const yargs = require('yargs')
 const fetch = require('node-fetch')
+const _ = require('lodash')
 
 const cliConfigPath = `${process.env.HOME}/.jira.d/config.yml`
 const configPath = `${process.env.HOME}/jira/config.yml`
