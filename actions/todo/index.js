@@ -99,6 +99,7 @@ async function findTodoInCommits(repo, commits) {
     return fetch(url, req).then((resp) => {
       return resp.text()
     }).then((res) => {
+      // TODO: refactor this code
       const rx = /\+\s*\/\/ TODO: (.*)$/gm
       return res.split(rx).filter(Boolean)
     })
