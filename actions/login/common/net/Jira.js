@@ -11,11 +11,11 @@ class Jira {
     this.email = email
   }
 
-  async getMyself() {
-    return this.fetch('getMyself', 
-    { pathname: '/rest/api/3/myself' }, {
-      method: 'GET'
-    })
+  async getMyself () {
+    return this.fetch('getMyself',
+      { pathname: '/rest/api/3/myself' }, {
+        method: 'GET',
+      })
   }
 
   async createIssue (body) {

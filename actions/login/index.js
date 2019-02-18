@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const YAML = require('yaml')
-const yargs = require('yargs')
 
 const cliConfigPath = `${process.env.HOME}/.jira.d/config.yml`
 const cliCredentialsPath = `${process.env.HOME}/.jira.d/credentials`
@@ -14,15 +13,14 @@ const githubEvent = require(process.env.GITHUB_EVENT_PATH)
 
 async function exec () {
   try {
+    if (!process.env.JIRA_BASE_URL) throw new Error('Please specify JIRA_BASE_URL env')
+    if (!process.env.JIRA_API_TOKEN) throw new Error('Please specify JIRA_API_TOKEN env')
+    if (!process.env.JIRA_USER_EMAIL) throw new Error('Please specify JIRA_USER_EMAIL env')
 
-    if (!process.env['JIRA_BASE_URL']) throw new Error('Please specify JIRA_BASE_URL env')
-    if (!process.env['JIRA_API_TOKEN']) throw new Error('Please specify JIRA_API_TOKEN env')
-    if (!process.env['JIRA_USER_EMAIL']) throw new Error('Please specify JIRA_USER_EMAIL env')
-    
     const config = {
-      baseUrl: process.env['JIRA_BASE_URL'],
-      token: process.env['JIRA_API_TOKEN'],
-      email: process.env['JIRA_USER_EMAIL']
+      baseUrl: process.env.JIRA_BASE_URL,
+      token: process.env.JIRA_API_TOKEN,
+      email: process.env.JIRA_USER_EMAIL,
     }
 
     const result = await new Action({
@@ -32,30 +30,26 @@ async function exec () {
     }).execute()
 
     if (result) {
-      
-
-      const yamledResult = YAML.stringify(result)
       const extendedConfig = Object.assign({}, config, result)
 
       if (!fs.existsSync(configPath)) {
-        fs.mkdirSync(path.dirname(configPath), {recursive: true})
+        fs.mkdirSync(path.dirname(configPath), { recursive: true })
       }
 
       fs.writeFileSync(configPath, YAML.stringify(extendedConfig))
-  
 
       if (!fs.existsSync(cliConfigPath)) {
-        fs.mkdirSync(path.dirname(cliConfigPath), {recursive: true})
+        fs.mkdirSync(path.dirname(cliConfigPath), { recursive: true })
       }
 
       fs.writeFileSync(cliConfigPath, YAML.stringify({
         endpoint: result.baseUrl,
-        login: result.email
+        login: result.email,
       }))
 
       fs.writeFileSync(cliCredentialsPath, `JIRA_API_TOKEN=${result.token}`)
 
-      return 
+      return
     }
 
     console.log('Failed to login.')

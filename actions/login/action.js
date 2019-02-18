@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const Jira = require('./common/net/Jira')
 
 module.exports = class {
@@ -15,9 +14,10 @@ module.exports = class {
   }
 
   async execute () {
-    
     const myself = await this.Jira.getMyself()
+
     console.log(`Logged in as: ${myself.name}`)
+
     return this.config
   }
 }
