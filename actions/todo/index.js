@@ -14,7 +14,7 @@ const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
 
 async function exec () {
   if (githubEvent.commits && githubEvent.commits.length > 0) {
-    console.log(await findTodoInCommits(githubEvent.repository, githubEvent.commits))
+    console.log(_.flatten(await findTodoInCommits(githubEvent.repository, githubEvent.commits)))
   }
 
   try {
@@ -93,9 +93,13 @@ async function findTodoInCommits(repo, commits) {
       }
     }
     const url = `https://api.github.com/repos/${repo.full_name}/commits/${c.id}`
+    // TODO: cleanup here
     console.log(url)
     return fetch(url, req).then((resp) => {
       return resp.text()
+    }).then((res) => {
+      const rx = `\+\s+\/\/ TODO: (.*)$`
+      return rx.match(res)
     })
   }))
 }
