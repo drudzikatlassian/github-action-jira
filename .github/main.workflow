@@ -33,7 +33,7 @@ action "Jira Comment" {
 action "Jira Transition" {
   uses = "./actions/transition"
   needs = ["Jira Comment"]
-  args = "done"
+  args = "Acceptance tested"
 }
 
 action "Jira Find" {
