@@ -101,7 +101,7 @@ async function findTodoInCommits(repo, commits) {
     }).then((res) => {
       // TODO: refactor
       const rx = /\+\s*\/\/ TODO: (.*)$/gm
-      return str.match(rx).map(m => m.split('// TODO: ')[1])
+      return res.match(rx).map(m => m.split('// TODO: ')[1])
     })
   }))
 }
