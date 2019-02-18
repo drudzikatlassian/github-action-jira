@@ -14,10 +14,6 @@ const githubEvent = require(process.env.GITHUB_EVENT_PATH)
 const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
 
 async function exec () {
-  if (githubEvent.commits && githubEvent.commits.length > 0) {
-    console.log(_.flatten(await findTodoInCommits(githubEvent.repository, githubEvent.commits)))
-  }
-
   try {
     const result = await new Action({
       githubEvent,
@@ -26,16 +22,9 @@ async function exec () {
     }).execute()
 
     if (result) {
-      console.log(`Created issue: ${result.issue}`)
-      console.log(`Saving ${result.issue} to ${cliConfigPath}`)
-      console.log(`Saving ${result.issue} to ${configPath}`)
+      console.log(`Created issues: ${result.issues}`)
 
-      const yamledResult = YAML.stringify(result)
-      const extendedConfig = Object.assign({}, config, result)
-
-      fs.writeFileSync(configPath, YAML.stringify(extendedConfig))
-
-      return fs.appendFileSync(cliConfigPath, yamledResult)
+      return
     }
 
     console.log('Failed to create issue.')
@@ -82,28 +71,6 @@ function parseArgs () {
     })
 
   return yargs.argv
-}
-
-async function findTodoInCommits(repo, commits) {
-  console.log(commits)
-  return Promise.all(commits.map((c) => {
-    const req = {
-      headers: {
-        Authorization: `token ${githubToken}`,
-        Accept: 'application/vnd.github.v3.diff',
-      }
-    }
-    const url = `https://api.github.com/repos/${repo.full_name}/commits/${c.id}`
-    // TODO: cleanup here
-    console.log(url)
-    return fetch(url, req).then((resp) => {
-      return resp.text()
-    }).then((res) => {
-      // TODO: refactor
-      const rx = /\+\s*\/\/ TODO: (.*)$/gm
-      return (res.match(rx) || []).map(m => m.split('// TODO: ')[1])
-    })
-  }))
 }
 
 exec()

@@ -15,11 +15,20 @@ module.exports = class {
   }
 
   async execute () {
-    this.preprocessArgs()
-
-    const { argv } = this
+    const { argv, githubEvent } = this
     const projectKey = argv.project
     const issuetypeName = argv.issuetype
+    let summaries
+
+    if (githubEvent.commits && githubEvent.commits.length > 0) {
+      summaries = _.flatten(await this.findTodoInCommits(githubEvent.repository, githubEvent.commits))
+    }
+
+    if (summaries.length === 0) {
+      console.log('no TODO found')
+
+      return
+    }
 
     // map custom fields
     const { projects } = await this.Jira.getCreateMeta({
@@ -42,43 +51,47 @@ module.exports = class {
       return
     }
 
-    let providedFields = [{
-      key: 'project',
-      value: {
-        key: projectKey,
-      },
-    }, {
-      key: 'issuetype',
-      value: {
-        name: issuetypeName,
-      },
-    }, {
-      key: 'summary',
-      value: argv.summary,
-    }]
+    const issues = []
 
-    if (argv.description) {
-      providedFields.push({
-        key: 'description',
-        value: argv.description,
+    for (summary in summaries) {
+      let providedFields = [{
+        key: 'project',
+        value: {
+          key: projectKey,
+        },
+      }, {
+        key: 'issuetype',
+        value: {
+          name: issuetypeName,
+        },
+      }, {
+        key: 'summary',
+        value: summary,
+      }]
+
+      if (argv.description) {
+        providedFields.push({
+          key: 'description',
+          value: argv.description,
+        })
+      }
+
+      if (argv.fields) {
+        providedFields = [...providedFields, ...this.transformFields(argv.fields)]
+      }
+
+      const payload = providedFields.reduce((acc, field) => {
+        acc.fields[field.key] = field.value
+
+        return acc
+      }, {
+        fields: {},
       })
+
+      issues.push(await this.Jira.createIssue(payload).key)
     }
 
-    if (argv.fields) {
-      providedFields = [...providedFields, ...this.transformFields(argv.fields)]
-    }
-
-    const payload = providedFields.reduce((acc, field) => {
-      acc.fields[field.key] = field.value
-
-      return acc
-    }, {
-      fields: {},
-    })
-
-    const issue = await this.Jira.createIssue(payload)
-
-    return { issue: issue.key }
+    return { issues: issues }
   }
 
   transformFields (fields) {
@@ -90,10 +103,30 @@ module.exports = class {
 
   preprocessArgs () {
     _.templateSettings.interpolate = /{{([\s\S]+?)}}/g
-    const summaryTmpl = _.template(this.argv.summary)
     const descriptionTmpl = _.template(this.argv.description)
 
-    this.argv.summary = summaryTmpl({ event: this.githubEvent })
     this.argv.description = descriptionTmpl({ event: this.githubEvent })
+  }
+
+  async findTodoInCommits(repo, commits) {
+    console.log(commits)
+    return Promise.all(commits.map((c) => {
+      const req = {
+        headers: {
+          Authorization: `token ${githubToken}`,
+          Accept: 'application/vnd.github.v3.diff',
+        }
+      }
+      const url = `https://api.github.com/repos/${repo.full_name}/commits/${c.id}`
+      // TODO: cleanup here
+      console.log(url)
+      return fetch(url, req).then((resp) => {
+        return resp.text()
+      }).then((res) => {
+        // TODO: refactor
+        const rx = /\+\s*\/\/ TODO: (.*)$/gm
+        return (res.match(rx) || []).map(m => m.split('// TODO: ')[1])
+      })
+    }))
   }
 }
