@@ -20,13 +20,13 @@ module.exports = class {
     const { argv, githubEvent } = this
     const projectKey = argv.project
     const issuetypeName = argv.issuetype
-    let summaries
+    let tasks
 
     if (githubEvent.commits && githubEvent.commits.length > 0) {
-      summaries = _.flatten(await this.findTodoInCommits(githubEvent.repository, githubEvent.commits))
+      tasks = _.flatten(await this.findTodoInCommits(githubEvent.repository, githubEvent.commits))
     }
 
-    if (summaries.length === 0) {
+    if (tasks.length === 0) {
       console.log('no TODO found')
 
       return
@@ -53,7 +53,7 @@ module.exports = class {
       return
     }
 
-    const issues = summaries.map(async summary => {
+    const issues = tasks.map(async ({ summary, commitUrl }) => {
       let providedFields = [{
         key: 'project',
         value: {
@@ -69,12 +69,14 @@ module.exports = class {
         value: summary,
       }]
 
-      if (argv.description) {
-        providedFields.push({
-          key: 'description',
-          value: argv.description,
-        })
+      if (!argv.description) {
+        argv.description = `Created with Github commit ${commitUrl}`
       }
+
+      providedFields.push({
+        key: 'description',
+        value: argv.description,
+      })
 
       if (argv.fields) {
         providedFields = [...providedFields, ...this.transformFields(argv.fields)]
@@ -118,13 +120,19 @@ module.exports = class {
         }
       }
       const url = `https://api.github.com/repos/${repo.full_name}/commits/${c.id}`
-      // TODO: cleanup here.
+      // TODO: cleanup here
       console.log(url)
       const resp = await fetch(url, req);
       const res = await resp.text();
-      // TODO: refactor this or not
+      // TODO: refactor this
       const rx = /\+\s*\/\/ TODO: (.*)$/gm;
-      return (res.match(rx) || []).map(m => m.split('// TODO: ')[1]);
+      const summaries = (res.match(rx) || []).map(m => m.split('// TODO: ')[1])
+      return summaries.map((s) => {
+        return {
+          commitUrl: c.url,
+          summary: s,
+        }
+      });
     }))
   }
 }
