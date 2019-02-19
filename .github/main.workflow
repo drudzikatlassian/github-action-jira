@@ -28,7 +28,7 @@ action "Jira Create" {
 action "Jira TODO" {
   uses = "./actions/todo"
   needs = ["Jira Login"]
-  args = "--project=GA --issuetype=Task --summary=TODO"
+  args = "--project=GA --issuetype=Task"
   secrets = ["GITHUB_TOKEN"]
 }
 
