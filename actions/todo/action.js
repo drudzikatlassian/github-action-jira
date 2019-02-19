@@ -120,11 +120,11 @@ module.exports = class {
         }
       }
       const url = `https://api.github.com/repos/${repo.full_name}/commits/${c.id}`
-      // TODO: cleanup here
+      // TODO: cleanup here please
       console.log(url)
       const resp = await fetch(url, req);
       const res = await resp.text();
-      // TODO: refactor this
+      // TODO: refactor this please
       const rx = /\+\s*\/\/ TODO: (.*)$/gm;
       const summaries = (res.match(rx) || []).map(m => m.split('// TODO: ')[1])
       return summaries.map((s) => {

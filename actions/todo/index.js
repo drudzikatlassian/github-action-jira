@@ -50,13 +50,6 @@ function parseArgs () {
       default: config.issuetype,
       type: 'string',
     })
-    .option('summary', {
-      alias: 's',
-      describe: 'Provide summary for the issue',
-      demandOption: !config.summary,
-      default: config.summary,
-      type: 'string',
-    })
     .option('description', {
       alias: 'd',
       describe: 'Provide issue description',
