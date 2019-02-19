@@ -118,8 +118,7 @@ module.exports = class {
   async findTodoInCommits(repo, commits) {
     console.log(commits)
     return Promise.all(commits.map(async (c) => {
-      // TODO:    Cleanup here   
-      console.log(url)
+      // TODO:    Cleanup here qweqwe   
       const res = await this.GitHub.getCommitDiff(repo.full_name, c.id)
       const rx = /\+.*\/\/\s+TODO:(.*)$/gm
       return getMatches(res, rx, 1)
