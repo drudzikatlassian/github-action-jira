@@ -1,6 +1,7 @@
 const _ = require('lodash')
 const fetch = require('node-fetch')
 const Jira = require('./common/net/Jira')
+const GitHub = require('./common/net/GitHub')
 
 module.exports = class {
   constructor ({ githubEvent, argv, config, githubToken }) {
@@ -8,6 +9,10 @@ module.exports = class {
       baseUrl: config.baseUrl,
       token: config.token,
       email: config.email,
+    })
+
+    this.GitHub = new GitHub({
+      token: githubToken
     })
 
     this.config = config
@@ -20,7 +25,7 @@ module.exports = class {
     const { argv, githubEvent } = this
     const projectKey = argv.project
     const issuetypeName = argv.issuetype
-    let tasks
+    let tasks = []
 
     if (githubEvent.commits && githubEvent.commits.length > 0) {
       tasks = _.flatten(await this.findTodoInCommits(githubEvent.repository, githubEvent.commits))
@@ -113,26 +118,29 @@ module.exports = class {
   async findTodoInCommits(repo, commits) {
     console.log(commits)
     return Promise.all(commits.map(async (c) => {
-      const req = {
-        headers: {
-          Authorization: `token ${this.githubToken}`,
-          Accept: 'application/vnd.github.v3.diff',
-        }
-      }
-      const url = `https://api.github.com/repos/${repo.full_name}/commits/${c.id}`
-      // TODO: cleanup here please
+      // TODO:    Cleanup here   
       console.log(url)
-      const resp = await fetch(url, req);
-      const res = await resp.text();
-      // TODO: refactor this please
-      const rx = /\+\s*\/\/ TODO: (.*)$/gm;
-      const summaries = (res.match(rx) || []).map(m => m.split('// TODO: ')[1])
-      return summaries.map((s) => {
-        return {
-          commitUrl: c.url,
-          summary: s,
-        }
-      });
+      const res = await this.GitHub.getCommitDiff(repo.full_name, c.id)
+      const rx = /\+.*\/\/\s+TODO:(.*)$/gm
+      return getMatches(res, rx, 1)
+        .map(_.trim)
+        .filter(Boolean)
+        .map((s) => {
+          return {
+            commitUrl: c.url,
+            summary: s,
+          }
+        })
     }))
   }
+}
+
+function getMatches(string, regex, index) {
+  index || (index = 1)
+  var matches = []
+  var match
+  while (match = regex.exec(string)) {
+    matches.push(match[index])
+  }
+  return matches
 }
