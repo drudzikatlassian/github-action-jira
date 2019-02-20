@@ -5,6 +5,7 @@ const yargs = require('yargs')
 const cliConfigPath = `${process.env.HOME}/.jira.d/config.yml`
 const configPath = `${process.env.HOME}/jira/config.yml`
 const Action = require('./action')
+const githubToken = process.env.GITHUB_TOKEN
 
 // eslint-disable-next-line import/no-dynamic-require
 const githubEvent = require(process.env.GITHUB_EVENT_PATH)
@@ -16,23 +17,16 @@ async function exec () {
       githubEvent,
       argv: parseArgs(),
       config,
+      githubToken,
     }).execute()
 
     if (result) {
-      console.log(`Detected issueKey: ${result.issue}`)
-      console.log(`Saving ${result.issue} to ${cliConfigPath}`)
-      console.log(`Saving ${result.issue} to ${configPath}`)
+      console.log(`Created issues: ${result.issues}`)
 
-      const yamledResult = YAML.stringify(result)
-      const extendedConfig = Object.assign({}, config, result)
-
-      fs.writeFileSync(configPath, YAML.stringify(extendedConfig))
-
-      return fs.appendFileSync(cliConfigPath, yamledResult)
+      return
     }
 
-    console.log('No issueKeys found.')
-    process.exit(78)
+    process.exit(0)
   } catch (error) {
     console.error(error)
     process.exit(1)
@@ -41,22 +35,25 @@ async function exec () {
 
 function parseArgs () {
   yargs
-    .option('event', {
-      alias: 'e',
-      describe: 'Provide jsonpath for the GitHub event to extract issue from',
-      default: config.event,
+    .option('project', {
+      alias: 'p',
+      describe: 'Provide project to create issue in',
+      demandOption: !config.project,
+      default: config.project,
       type: 'string',
     })
-    .option('string', {
-      alias: 's',
-      describe: 'Provide a string to extract issue key from',
-      default: config.string,
+    .option('issuetype', {
+      alias: 't',
+      describe: 'Provide type of the issue to be created',
+      demandOption: !config.issuetype,
+      default: config.issuetype,
       type: 'string',
     })
-    .option('from', {
-      describe: 'Find from predefined place',
+    .option('description', {
+      alias: 'd',
+      describe: 'Provide issue description',
+      default: config.description,
       type: 'string',
-      choices: ['branch', 'commits'],
     })
 
   yargs

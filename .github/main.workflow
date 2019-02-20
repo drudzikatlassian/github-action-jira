@@ -3,6 +3,7 @@ workflow "Build - Test - Publish" {
   resolves = [
     "Jira Login",
     "Jira Find",
+    "Jira TODO",
     "Test 'Jira Create'",
   ]
 }
@@ -22,6 +23,13 @@ action "Jira Create" {
   uses = "./actions/create"
   needs = ["Jira Login"]
   args = "--project=GA --issuetype=Build --summary=\"Build completed for $GITHUB_REPOSITORY\" --description=\"[Compare branch|{{event.compare}}] \" "
+}
+
+action "Jira TODO" {
+  uses = "./actions/todo"
+  needs = ["Jira Login"]
+  args = "--project=GA --issuetype=Task"
+  secrets = ["GITHUB_TOKEN"]
 }
 
 action "Jira Comment" {

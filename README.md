@@ -8,3 +8,4 @@ The GitHub Actions for [Jira](https://www.atlassian.com/software/jira) to create
  - [`Transition`](./actions/transition) - Transition an issue
  - [`Find Issue Key`](./actions/find-issue-key) - Find an issue to operate
  - [`Comment`](./actions/comment) - Add a comment to an issue
+ - [`TODO`](./actions/todo) - Create Jira issue for TODO comments

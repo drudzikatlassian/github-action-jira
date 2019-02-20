@@ -3,6 +3,11 @@ const Jira = require('./common/net/Jira')
 
 const issueIdRegEx = /([a-zA-Z0-9]+-[0-9]+)/g
 
+const eventTemplates = {
+  'branch': "{{event.ref}}",
+  'commits': "{{event.commits.map(c=>c.message).join(' ')}}",
+}
+
 module.exports = class {
   constructor ({ githubEvent, argv, config }) {
     this.Jira = new Jira({
@@ -17,8 +22,8 @@ module.exports = class {
   }
 
   async execute () {
-    const extractString = this.preprocessString(this.argv._.join(' '))
-
+    const template = eventTemplates[this.argv.from] || this.argv._.join(' ')
+    const extractString = this.preprocessString(template)
     const match = extractString.match(issueIdRegEx)
 
     if (!match) {
