@@ -3,7 +3,16 @@ Create issue for TODO comments
 
 ## Usage
 
-TBD
+Create Jira issue from TODO comments in pushed code.
+
+Single-line comments in these formats:
+
+```go
+// TODO: refactor this callback mess
+```
+```ruby
+# TODO: rewrite api client
+```
 
 ----
 ## Action Spec:
@@ -13,4 +22,5 @@ TBD
 
 ### Arguments
 
-TBD
+- `--project=<project key>` - Key of the project
+- `--issuetype=<issue type>` - Type of the issue to be created. Example: 'Task'
