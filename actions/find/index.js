@@ -53,6 +53,11 @@ function parseArgs () {
       default: config.string,
       type: 'string',
     })
+    .option('from', {
+      describe: 'Find from predefined place',
+      type: 'string',
+      choices: ['branch', 'commits'],
+    })
 
   yargs
     .parserConfiguration({

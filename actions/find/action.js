@@ -17,7 +17,19 @@ module.exports = class {
   }
 
   async execute () {
-    const extractString = this.preprocessString(this.argv._.join(' '))
+    let extractString
+
+    switch (this.argv.from) {
+      case 'branch':
+        extractString = "{{event.ref}}"
+        break;
+      case 'commits':
+        extractString = "{{event.commits.map(c=>c.message).join(' ')}}"
+        break;
+      default:
+        extractString = this.preprocessString(this.argv._.join(' '))
+        break;
+    }
 
     const match = extractString.match(issueIdRegEx)
 
