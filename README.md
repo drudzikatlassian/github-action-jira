@@ -6,5 +6,5 @@ The GitHub Actions for [Jira](https://www.atlassian.com/software/jira) to create
  - [`CLI`](./actions/cli) - Wrapped [go-jira](https://github.com/Netflix-Skunkworks/go-jira) CLI
  - [`Create`](./actions/create) - Create new Jira issue
  - [`Transition`](./actions/transition) - Transition an issue
- - [`Find`](./actions/find) - Find an issue to operate
+ - [`Find Issue Key`](./actions/find-issue-key) - Find an issue to operate
  - [`Comment`](./actions/comment) - Add a comment to an issue

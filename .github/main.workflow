@@ -37,7 +37,7 @@ action "Jira Transition" {
 }
 
 action "Jira Find" {
-  uses = "./actions/find"
+  uses = "./actions/find-issue-key"
   needs = ["Jira Transition"]
   args = "GA-1"
 }
