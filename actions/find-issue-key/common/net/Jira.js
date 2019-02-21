@@ -21,15 +21,17 @@ class Jira {
     const { fields = [], expand = [] } = query
 
     try {
-      return this.fetch('getIssue', {
+      const res = await this.fetch('getIssue', {
         pathname: `/rest/api/2/issue/${issueId}`,
         query: {
           fields: fields.join(','),
           expand: expand.join(','),
         },
       })
+
+      return res
     } catch (error) {
-      if (get(error, 'state.res.status') === 404) {
+      if (get(error, 'res.status') === 404) {
         return
       }
 
