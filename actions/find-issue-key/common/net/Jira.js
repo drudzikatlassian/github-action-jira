@@ -29,7 +29,7 @@ class Jira {
         },
       })
     } catch (error) {
-      if (get(error, 'res.status') === 404) {
+      if (get(error, 'state.res.status') === 404) {
         return
       }
 
