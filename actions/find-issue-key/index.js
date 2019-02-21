@@ -32,7 +32,7 @@ async function exec () {
     }
 
     console.log('No issueKeys found.')
-    process.exit(0)
+    process.exit(78)
   } catch (error) {
     console.error(error)
     process.exit(1)
