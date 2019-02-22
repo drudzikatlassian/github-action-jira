@@ -14,6 +14,8 @@ RUN wget -q https://github.com/Netflix-Skunkworks/go-jira/releases/download/v1.0
     && chmod +x jira-linux-amd64
 
 COPY entrypoint.sh /entrypoint.sh
+COPY gagas /gagas
 RUN chmod +x /entrypoint.sh
+RUN chmod +x /gagas
 
 ENTRYPOINT ["/entrypoint.sh"]

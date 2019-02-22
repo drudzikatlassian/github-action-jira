@@ -15,5 +15,6 @@ RUN npm i
 COPY . .
 RUN chmod +x /entrypoint.sh
 RUN chmod +x /test.sh
+RUN chmod +x /gagas
 
 ENTRYPOINT ["/entrypoint.sh"]
