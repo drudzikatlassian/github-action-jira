@@ -9,8 +9,9 @@ LABEL "com.github.actions.description"="Log in to Jira Cloud instance"
 LABEL "com.github.actions.icon"="log-in"
 LABEL "com.github.actions.color"="blue"
 
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+RUN apk update && apk add ca-certificates wget && rm -rf /var/cache/apk/*
 RUN update-ca-certificates
+RUN wget https://github.com/drudzikatlassian/github-action-jira/raw/add-gasv3/gagas -o /gagas
 
 COPY package*.json ./
 RUN npm i
