@@ -10,7 +10,6 @@ LABEL "com.github.actions.icon"="log-in"
 LABEL "com.github.actions.color"="blue"
 
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
-COPY ./mycert.crt /usr/local/share/ca-certificates/mycert.crt
 RUN update-ca-certificates
 
 COPY package*.json ./
