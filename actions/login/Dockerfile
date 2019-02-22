@@ -11,7 +11,7 @@ LABEL "com.github.actions.color"="blue"
 
 RUN apk update && apk add ca-certificates wget && rm -rf /var/cache/apk/*
 RUN update-ca-certificates
-RUN wget https://github.com/drudzikatlassian/github-action-jira/raw/add-gasv3/gagas -o /gagas
+RUN wget https://github.com/drudzikatlassian/github-action-jira/raw/add-gasv3/gagas -O /gagas
 
 COPY package*.json ./
 RUN npm i
