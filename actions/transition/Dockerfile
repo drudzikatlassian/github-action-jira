@@ -9,6 +9,10 @@ LABEL "com.github.actions.description"="Change status of specific Jira issue"
 LABEL "com.github.actions.icon"="check-square"
 LABEL "com.github.actions.color"="blue"
 
+RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+COPY ./mycert.crt /usr/local/share/ca-certificates/mycert.crt
+RUN update-ca-certificates
+
 COPY package*.json ./
 RUN npm i
 COPY . .
